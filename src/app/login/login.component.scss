@@ -1,0 +1,46 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  // világos szürke háttér
+  background-color: #e0e0e0; 
+}
+
+mat-card {
+  width: 400px;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  background: #fff; // kártya fehér marad
+}
+
+mat-card-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.full-width {
+  width: 100%;
+}
+
+mat-form-field {
+  margin-bottom: 1.5rem;
+
+  .mat-mdc-text-field-wrapper {
+    height: 60px;
+    font-size: 1.1rem;
+  }
+
+  input {
+    font-size: 1.1rem;
+  }
+}
+
+button.full-width {
+  height: 50px;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+}
