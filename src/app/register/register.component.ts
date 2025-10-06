@@ -1,19 +1,18 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { AuthService, AuthenticationRequest, AuthenticationResponse } from '../services/auth.service';
+import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-
 import { LoginHeaderComponent } from '../login-header/login-header.component';
+import { AuthService, RegisterRequest, AuthenticationResponse } from '../services/auth.service';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-register',
   standalone: true,
   imports: [
     CommonModule,
@@ -24,27 +23,37 @@ import { LoginHeaderComponent } from '../login-header/login-header.component';
     MatInputModule,
     MatButtonModule,
     RouterModule,  
-    LoginHeaderComponent   
+    LoginHeaderComponent
   ],
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss']
 })
-export class LoginComponent {
+export class RegisterComponent {
+  username = '';
   email = '';
   password = '';
 
   constructor(private auth: AuthService, private router: Router) {}
 
-  onLogin() {
-    const req: AuthenticationRequest = { email: this.email, password: this.password };
+  onRegister() {
+    const body: RegisterRequest = {
+      username: this.username,
+      email: this.email,
+      password: this.password
+    };
 
-    this.auth.login(req).subscribe({
+    this.auth.register(body).subscribe({
       next: (res: AuthenticationResponse) => {
         localStorage.setItem('token', res.token);
+        alert('Sikeres regisztráció!');
         this.router.navigateByUrl('/home');
       },
-      error: () => {
-        alert('Hibás email vagy jelszó!');
+      error: (err: HttpErrorResponse) => {
+        if (err.status === 409) {
+          alert('Ez az email vagy felhasználónév már létezik!');
+        } else {
+          alert('Hiba történt a regisztráció során!');
+        }
       }
     });
   }

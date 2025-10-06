@@ -1,19 +1,24 @@
 <app-login-header></app-login-header>
 
-<div class="login-container">
+<div class="register-container">
   <div class="left-panel">
-    <h1>Üdv újra az Okos Órarendben!</h1>
-    <p>Kezeld az órarended, nézd meg a heti beosztásod és kapj automatikus értesítéseket — mindezt egy helyen.</p>
+    <h1>Csatlakozz az Okos Órarendhez!</h1>
+    <p>Könnyed órarend-kezelés, automatikus értesítések és modern felület.</p>
   </div>
 
   <div class="right-panel">
     <mat-card>
       <mat-card-header>
-        <mat-card-title>Bejelentkezés</mat-card-title>
+        <mat-card-title>Regisztráció</mat-card-title>
       </mat-card-header>
 
       <mat-card-content>
-        <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+        <form (ngSubmit)="onRegister()" #registerForm="ngForm">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Felhasználónév</mat-label>
+            <input matInput name="username" [(ngModel)]="username" required />
+          </mat-form-field>
+
           <mat-form-field appearance="fill" class="full-width">
             <mat-label>Email</mat-label>
             <input matInput type="email" name="email" [(ngModel)]="email" required />
@@ -28,16 +33,16 @@
             mat-raised-button
             color="primary"
             type="submit"
-            [disabled]="!loginForm.form.valid"
+            [disabled]="!registerForm.form.valid"
             class="full-width"
           >
-            Belépés
+            Regisztráció
           </button>
         </form>
 
-        <div class="register-link">
-          Nincs még fiókod?
-          <a routerLink="/register">Regisztrálj itt!</a>
+        <div class="login-link">
+          Van már fiókod?
+          <a routerLink="/login">Jelentkezz be!</a>
         </div>
       </mat-card-content>
     </mat-card>

@@ -1,0 +1,70 @@
+/* ========  GLOBAL THEME  ======== */
+
+/* Saját színek */
+$primary-color: #1976d2;  // világosabb kék
+$accent-color: #0c4073;   // sötétebb kék
+$background-dark: #2c2c2c;
+$background-light: #c9c8c8;
+
+/* ========  Angular Material téma importok  ======== */
+@use '@angular/material' as mat;
+
+/* Alapszínek beállítása */
+$orarend-primary: mat.define-palette(mat.$indigo-palette, 500);
+$orarend-accent: mat.define-palette(mat.$blue-palette, 700, 500, 900);
+$orarend-warn: mat.define-palette(mat.$red-palette);
+
+/* Saját Angular Material téma */
+$orarend-theme: mat.define-light-theme((
+  color: (
+    primary: $orarend-primary,
+    accent: $orarend-accent,
+    warn: $orarend-warn,
+  ),
+  typography: mat.define-typography-config(),
+  density: 0
+));
+
+/* Alkalmazzuk a témát */
+@include mat.all-component-themes($orarend-theme);
+
+/* ========  Globális elemek ======== */
+body {
+  background-color: $background-dark;
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+}
+
+a {
+  color: $primary-color;
+  text-decoration: none;
+  font-weight: 500;
+
+  &:hover {
+    color: lighten($accent-color, 10%);
+    text-decoration: underline;
+  }
+}
+
+/* Gombok testreszabása */
+button.mat-mdc-raised-button {
+  background-color: $primary-color;
+  color: #fff;
+  font-weight: bold;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
+
+  &:disabled {
+    background-color: #777;
+    color: #ccc;
+  }
+}
+
+/* Kártyák (mat-card) általános stílusa */
+mat-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(25, 118, 210, 0.4);
+}

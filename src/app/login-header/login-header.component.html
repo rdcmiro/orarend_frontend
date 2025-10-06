@@ -1,0 +1,9 @@
+<mat-toolbar class="login-header">
+  <span class="project-name" routerLink="/" style="cursor: pointer;">
+    📅 Okos Órarend
+  </span>
+  <span class="spacer"></span>
+  <span class="clock">
+    {{ now | date: 'HH:mm:ss' }} | {{ now | date: 'yyyy.MM.dd' }}
+  </span>
+</mat-toolbar>
