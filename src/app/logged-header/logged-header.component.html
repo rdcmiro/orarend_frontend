@@ -1,0 +1,10 @@
+<mat-toolbar color="primary" class="logged-header">
+  <span class="app-title" routerLink="/home" style="cursor: pointer;">
+    📅 Okos Órarend
+  </span>
+  <span class="spacer"></span>
+
+  <button mat-button routerLink="/home">Órarend</button>
+  <button mat-button routerLink="/profile">Profil</button>
+  <button mat-button color="accent" (click)="logout()">Kijelentkezés</button>
+</mat-toolbar>

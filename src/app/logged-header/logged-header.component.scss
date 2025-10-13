@@ -1,0 +1,69 @@
+.logged-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #c9c8c8; /* világosszürke háttér, mint a login header */
+  color: #0c4073; /* sötétkék szöveg */
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    background-color: #d4d3d3;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .app-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #0c4073;
+    cursor: pointer;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+
+    &:hover {
+      color: #1976d2; /* világosabb kék hover */
+      text-shadow: 0 0 10px rgba(25, 118, 210, 0.7); /* kék glow */
+    }
+  }
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 600;
+    color: #0c4073;
+  }
+
+  button {
+    background-color: transparent;
+    color: #0c4073;
+    font-weight: 500;
+    text-transform: none;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 0.4rem 1rem;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #1976d2;
+      color: white;
+      box-shadow: 0 0 10px rgba(25, 118, 210, 0.6);
+    }
+
+    &:active {
+      background-color: #0c4073;
+      color: white;
+      box-shadow: 0 0 6px rgba(25, 118, 210, 0.4);
+    }
+  }
+}

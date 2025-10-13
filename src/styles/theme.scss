@@ -1,12 +1,10 @@
 /* ========  GLOBAL THEME  ======== */
 
-/* Saját színek */
-$primary-color: #1976d2;  // világosabb kék
-$accent-color: #0c4073;   // sötétebb kék
+$primary-color: #1976d2; 
+$accent-color: #0c4073;  
 $background-dark: #2c2c2c;
 $background-light: #c9c8c8;
 
-/* ========  Angular Material téma importok  ======== */
 @use '@angular/material' as mat;
 
 /* Alapszínek beállítása */

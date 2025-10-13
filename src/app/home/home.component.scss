@@ -1,0 +1,106 @@
+.home-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: calc(100vh - 64px);
+  background: linear-gradient(135deg, #d1d1d1, #bdbdbd);
+  padding: 2rem 3rem;
+  color: #f1f1f1;
+  gap: 2rem;
+}
+
+/* Órarend + Teendők azonos stílus */
+.schedule-section,
+.todo-section {
+  flex: 0 0 40%;
+  background: linear-gradient(180deg, #212121, #1a1a1a);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(25, 118, 210, 0.3);
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 10px 24px rgba(25, 118, 210, 0.45);
+  }
+
+  h2 {
+    color: #64b5f6;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid rgba(25, 118, 210, 0.5);
+    padding-bottom: 0.5rem;
+  }
+
+  table {
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    border-collapse: collapse;
+    table-layout: fixed;
+
+    th {
+      background: #1976d2;
+      color: #fff;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 0.9rem;
+    }
+
+    td {
+      background-color: #2a2a2a;
+      color: #eee;
+      font-size: 0.95rem;
+      transition: background-color 0.25s ease;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    tr:hover td {
+      background-color: rgba(25, 118, 210, 0.2);
+    }
+  }
+
+  .schedule-placeholder {
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: #bbb;
+    border: 2px dashed rgba(25, 118, 210, 0.3);
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.03);
+  }
+}
+
+/* Jobb oldali sidebar */
+.sidebar {
+  flex: 0 0 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+
+  .add-button {
+    background-color: #43a047 !important;
+    color: white !important;
+    font-weight: bold;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 10px;
+    margin-top: 1rem;
+    box-shadow: 0 0 12px rgba(67, 160, 71, 0.55);
+    transition: all 0.25s ease;
+
+    &:hover {
+      background-color: #388e3c !important;
+      box-shadow: 0 0 18px rgba(67, 160, 71, 0.9);
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 0 10px rgba(67, 160, 71, 0.5);
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterModule } from '@angular/router'; // ⬅️ kell a routerLink-hez
+import { RouterModule } from '@angular/router'; 
 
 @Component({
   selector: 'app-login-header',
