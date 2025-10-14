@@ -1,20 +1,17 @@
-import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
+import { HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
+import { catchError, throwError } from 'rxjs';
 
-@Injectable()
-export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private auth: AuthService) {}
+export const ErrorInterceptor: HttpInterceptorFn = (req, next) => {
+  const auth = inject(AuthService);
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(req).pipe(
-      catchError((err: HttpErrorResponse) => {
-        if (err.status === 401) {
-          this.auth.logout(); // token érvénytelen / lejárt
-        }
-        return throwError(() => err);
-      })
-    );
-  }
-}
+  return next(req).pipe(
+    catchError((err) => {
+      if (err.status === 401) {
+        auth.logout();
+      }
+      return throwError(() => err);
+    })
+  );
+};

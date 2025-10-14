@@ -1,35 +1,25 @@
-import { Injectable } from '@angular/core';
-import {
-  HttpInterceptor,
-  HttpRequest,
-  HttpHandler,
-  HttpEvent
-} from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
+import { throwError } from 'rxjs';
 
-@Injectable()
-export class TokenInterceptor implements HttpInterceptor {
-  constructor(private auth: AuthService) {}
+export const TokenInterceptor: HttpInterceptorFn = (req, next) => {
+  const auth = inject(AuthService);
+  const token = auth.getToken();
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = this.auth.getToken();
+  console.log('✅✅✅✅✅TokenInterceptor fut, token:✅✅✅✅✅✅✅✅✅✅', token);
 
-    // 🔹 Ha van token, de lejárt → logout
-    if (token && this.auth.isTokenExpired()) {
-      this.auth.logout();
-      return throwError(() => new Error('Token expired'));
-    }
-
-    // 🔹 Ha van érvényes token → hozzáadjuk a headerhez
-    if (token) {
-      const cloned = req.clone({
-        setHeaders: { Authorization: `Bearer ${token}` }
-      });
-      return next.handle(cloned);
-    }
-
-    // 🔹 Ha nincs token → simán továbbmegy
-    return next.handle(req);
+  if (token && auth.isTokenExpired()) {
+    auth.logout();
+    return throwError(() => new Error('Token expired'));
   }
-}
+
+  if (token) {
+    const cloned = req.clone({
+      setHeaders: { Authorization: `Bearer ${token}` }
+    });
+    return next(cloned);
+  }
+
+  return next(req);
+};
