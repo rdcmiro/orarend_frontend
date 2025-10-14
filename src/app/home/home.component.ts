@@ -14,6 +14,11 @@ export interface Lesson {
   endTime: string;
 }
 
+
+
+
+
+
 export interface Todo {
   text: string;
   done: boolean;
