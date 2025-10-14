@@ -36,17 +36,21 @@ export class LoginComponent {
 
   constructor(private auth: AuthService, private router: Router) {}
 
-  onLogin() {
-    const req: AuthenticationRequest = { email: this.email, password: this.password };
+onLogin() {
+  const req: AuthenticationRequest = { email: this.email, password: this.password };
 
-    this.auth.login(req).subscribe({
-      next: (res: AuthenticationResponse) => {
-        localStorage.setItem('token', res.token);
-        this.router.navigateByUrl('/home');
-      },
-      error: () => {
-        alert('Hibás email vagy jelszó!');
-      }
-    });
-  }
+  this.auth.login(req).subscribe({
+    next: (res: AuthenticationResponse) => {
+    
+      this.auth.setToken(res.token);
+
+    
+      this.router.navigateByUrl('/home');
+    },
+    error: () => {
+      alert('Hibás email vagy jelszó!');
+    }
+  });
+}
+
 }
