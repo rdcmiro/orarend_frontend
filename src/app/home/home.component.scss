@@ -1,27 +1,24 @@
 .home-container {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly; /* 🔹 egyenletesebb elosztás */
-  align-items: stretch; /* 🔹 egyforma magasság */
+  justify-content: space-between;
+  align-items: flex-start;
   height: calc(100vh - 64px);
   background: linear-gradient(135deg, #d1d1d1, #bdbdbd);
   padding: 1.5rem 2rem;
   color: #f1f1f1;
-  gap: 1rem; /* 🔹 közelebb hozva a dobozokat */
+  gap: 1.5rem;
 }
 
 /* ─────────────────────────────── */
-/*  Órarend szekció                */
+/*  Vizuális órarend grid layout   */
 /* ─────────────────────────────── */
 .schedule-section {
-  flex: 0 0 38%; /* 🔹 picit szélesebb lett */
+  flex: 0 0 36%;
   background: linear-gradient(180deg, #212121, #1a1a1a);
   padding: 1.4rem;
   border-radius: 16px;
   box-shadow: 0 8px 20px rgba(25, 118, 210, 0.3);
-  display: flex;
-  flex-direction: column;
-  height: 100%; /* 🔹 kitölti a rendelkezésre álló magasságot */
 
   h2 {
     color: #64b5f6;
@@ -34,10 +31,9 @@
   .timetable-wrapper {
     display: flex;
     flex-direction: row;
-    position: relative;
-    flex-grow: 1; /* 🔹 kitölti a rendelkezésre álló helyet */
-    max-height: none; /* 🔹 engedjük megnyúlni, de belső korlát marad */
     overflow: hidden;
+    position: relative;
+    max-height: calc(26px * 25 + 35px); /* 🔹 korlátozás 20:00-ig */
   }
 
   .times-column {
@@ -61,14 +57,16 @@
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: 35px repeat(25, 26px);
     gap: 1px;
+    position: relative;
     flex: 1;
     border-radius: 12px;
-    overflow: hidden;
+    overflow-y: hidden; /* 🔹 nem nyúlhat túl 20:00 után */
     background: #0d1117;
     box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(255, 255, 255, 0.05);
   }
 
+  /* 🔹 napok középre igazítása */
   .header {
     background: rgba(25, 118, 210, 0.2);
     color: #90caf9;
@@ -77,7 +75,7 @@
     letter-spacing: 0.5px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center; /* 🔹 vízszintesen középre */
     text-align: center;
     border-radius: 6px;
     position: sticky;
@@ -86,6 +84,7 @@
     backdrop-filter: blur(6px);
   }
 
+  /* 🔹 halvány fekete vonalak */
   .timetable-grid::after {
     content: '';
     position: absolute;
@@ -135,14 +134,11 @@
 /*  Teendők szekció                */
 /* ─────────────────────────────── */
 .todo-section {
-  flex: 0 0 38%;
+  flex: 0 0 36%;
   background: linear-gradient(180deg, #212121, #1a1a1a);
   padding: 1.4rem;
   border-radius: 16px;
   box-shadow: 0 8px 20px rgba(25, 118, 210, 0.3);
-  display: flex;
-  flex-direction: column;
-  height: 100%; /* 🔹 egyforma magasság az órarenddel */
 
   h2 {
     color: #64b5f6;
@@ -158,7 +154,6 @@
     border-collapse: collapse;
     table-layout: fixed;
     background: #2a2a2a;
-    flex-grow: 1; /* 🔹 hogy kitöltse a magasságot */
 
     th {
       background: #1976d2;
@@ -188,7 +183,7 @@
 /*  Zöld gomb                      */
 /* ─────────────────────────────── */
 .sidebar {
-  flex: 0 0 8%; /* 🔹 kisebb hely */
+  flex: 0 0 10%;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
