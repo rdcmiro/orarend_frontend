@@ -36,21 +36,22 @@
     max-height: calc(26px * 25 + 35px); /* 🔹 korlátozás 20:00-ig */
   }
 
-  .times-column {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    padding-top: 40px;
-    margin-right: 10px;
-    user-select: none;
-  }
+.times-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-top: 35px; /* 40 helyett 35: pontosan a grid header magasságával egyezik */
+  margin-right: 10px;
+  user-select: none;
+}
 
-  .time-label {
-    height: 26px;
-    width: 45px;
-    font-size: 0.7rem;
-    color: #aaa;
-  }
+.time-label {
+  height: 26px;
+  width: 45px;
+  font-size: 0.7rem;
+  color: #aaa;
+  line-height: 26px; /* pontos középre igazítás a cellában */
+}
 
   .timetable-grid {
     display: grid;

@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { AuthService } from "./auth.service";
+import { HttpResponse, HttpStatusCode } from '@angular/common/http';
 
 export interface Lesson {
     id?: number;
@@ -25,11 +26,14 @@ export class LessonService {
         return this.http.get<Lesson[]>(`${this.apiUrl}/allUserLessons`);
     }
 
-    createLesson(lesson: Omit<Lesson, 'id'>): Observable<Lesson> {
-        return this.http.post<Lesson>(`${this.apiUrl}/create`, lesson);
+    createLesson(lesson: any): Observable<HttpResponse<string>> {
+        return this.http.post(`${this.apiUrl}/create`, lesson, {
+            observe: 'response',
+            responseType: 'text'
+    });
     }
 
-      
+
     updateLesson(id: number, lesson: Omit<Lesson, 'id'>): Observable<Lesson> {
         return this.http.put<Lesson>(`${this.apiUrl}/update/${id}`, lesson);
     }
@@ -41,6 +45,5 @@ export class LessonService {
     getLessonById(id: number): Observable<Lesson> {
         return this.http.get<Lesson>(`${this.apiUrl}/get/${id}`);
     }
-
 
 }

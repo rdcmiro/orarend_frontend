@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, Renderer2, ViewChild, ChangeDetectorRef, ApplicationRef, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -6,7 +6,9 @@ import { MatTable, MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { LoggedHeaderComponent } from '../logged-header/logged-header.component';
 import { LessonService, Lesson } from '../services/lesson.service';
-import { ChangeDetectorRef, ApplicationRef } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { AddLessonDialogComponent } from '../add-lesson-dialog/add-lesson-dialog.component';
+import { HttpStatusCode } from '@angular/common/http';
 
 export interface Todo {
   text: string;
@@ -40,7 +42,6 @@ export class HomeComponent implements OnInit {
   displayedColumns: string[] = ['dayOfWeek', 'className', 'teacher', 'time'];
   todoColumns: string[] = ['status', 'text'];
 
-  // 🟦 vizuális órarendhez
   weekDays = ['Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek'];
   timeSlots: string[] = [];
 
@@ -49,13 +50,13 @@ export class HomeComponent implements OnInit {
     private renderer: Renderer2,
     private lessonService: LessonService,
     private cdr: ChangeDetectorRef,
-    private appRef: ApplicationRef
+    private appRef: ApplicationRef,
+    private dialog: MatDialog,
+    private ngZone: NgZone
   ) {}
 
   ngOnInit(): void {
     this.adjustLayout();
-
-    // 🟦 félórás idősávok generálása 08:00–20:00 között
     this.generateTimeSlots('08:00', '20:00', 30);
 
     setTimeout(() => {
@@ -104,7 +105,7 @@ export class HomeComponent implements OnInit {
   }
 
   // ─────────────────────────────
-  // 🟦 Idősáv generálás (félórás lépések)
+  // 🟦 Idősáv generálás
   // ─────────────────────────────
   generateTimeSlots(start: string, end: string, stepMinutes: number) {
     const [startHour, startMin] = start.split(':').map(Number);
@@ -124,25 +125,28 @@ export class HomeComponent implements OnInit {
   // ─────────────────────────────
   loadLessons(): void {
     console.log('🟡 Lekérés indult...');
+
     this.lessonService.getAllByUser().subscribe({
       next: (data) => {
         console.log('🟢 Backend válasz:', data);
 
-        // normalizáljuk az időformátumokat (HH:mm)
-        this.lessons = data.map((lesson) => ({
-          ...lesson,
-          dayOfWeek: this.mapDayToHungarian(lesson.dayOfWeek),
-          startTime: this.toHHmm(lesson.startTime),
-          endTime: this.toHHmm(lesson.endTime)
-        }));
+        this.ngZone.run(() => {
+          // 🔹 új referencia, hogy Angular érzékelje
+          this.lessons = [...data.map((lesson) => ({
+            ...lesson,
+            dayOfWeek: this.mapDayToHungarian(lesson.dayOfWeek),
+            startTime: this.toHHmm(lesson.startTime),
+            endTime: this.toHHmm(lesson.endTime)
+          }))];
 
-        console.log('✅ Lessons feltöltve:', this.lessons);
-
-        setTimeout(() => {
-          this.table?.renderRows();
+          // 🔹 három szintű újrarajzolás: CD → Table → AppRef
           this.cdr.detectChanges();
+          this.cdr.markForCheck();
+          this.table?.renderRows();
           this.appRef.tick();
-        }, 0);
+
+          console.log('✅ Lessons újratöltve és kirajzolva.');
+        });
       },
       error: (err) => {
         console.error('🔴 Hiba az órák lekérésekor:', err);
@@ -151,16 +155,35 @@ export class HomeComponent implements OnInit {
   }
 
   onAddLesson(): void {
-    const newLesson = {
-      className: 'Fizika',
-      teacher: 'Varga Tamás',
-      dayOfWeek: 'Thursday',
-      startTime: '09:00',
-      endTime: '09:45'
-    };
+    const dialogRef = this.dialog.open(AddLessonDialogComponent, {
+      width: '400px',
+      panelClass: 'custom-dialog'
+    });
 
-    this.lessonService.createLesson(newLesson).subscribe({
-      next: () => this.loadLessons()
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const newLesson = {
+          className: result.className,
+          teacher: result.teacher,
+          dayOfWeek: this.mapDayToEnglish(result.dayOfWeek),
+          startTime: result.startTime,
+          endTime: result.endTime
+        };
+        this.lessonService.createLesson(newLesson).subscribe({
+          next: (response) => {
+            console.log('🟢 Válasz érkezett a backendtől:', response);            
+            console.log('🚀 Létrehozás sikeres, újratöltés...');
+            this.loadLessons();
+          },
+          error: (err) => {
+            if (err.status === 409) {
+              alert('⚠️ Ilyen óra már létezik!');
+            } else {
+              console.error('🔴 Hiba létrehozás közben:', err);
+            }
+          }
+        });
+      }
     });
   }
 
@@ -181,11 +204,19 @@ export class HomeComponent implements OnInit {
     return map[day] || day;
   }
 
-  // ─────────────────────────────
-  // 🟦 Segédfüggvények a vizuális rácshoz
-  // ─────────────────────────────
+  mapDayToEnglish(day: string): string {
+    const map: Record<string, string> = {
+      'Hétfő': 'Monday',
+      'Kedd': 'Tuesday',
+      'Szerda': 'Wednesday',
+      'Csütörtök': 'Thursday',
+      'Péntek': 'Friday'
+    };
+    return map[day] || day;
+  }
+
   getColumn(day: string): number {
-    return this.weekDays.indexOf(day) + 2; // +1 az időoszlop, +1 mert 1-indexelt
+    return this.weekDays.indexOf(day) + 1;
   }
 
   getRow(time: string): number {
@@ -197,6 +228,6 @@ export class HomeComponent implements OnInit {
     const start = this.toMinutes(lesson.startTime);
     const end = this.toMinutes(lesson.endTime);
     if (Number.isNaN(start) || Number.isNaN(end) || end <= start) return 1;
-    return Math.max(1, Math.ceil((end - start) / 30)); // 30 perces blokkok
+    return Math.max(1, Math.ceil((end - start) / 30));
   }
 }
