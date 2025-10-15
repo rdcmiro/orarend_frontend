@@ -5,43 +5,36 @@
   <div class="schedule-section">
     <h2>Órarend</h2>
 
-    <table
-      mat-table
-      [dataSource]="lessons"
-      class="mat-elevation-z8 lesson-table"
-      *ngIf="lessons.length > 0; else noLessons"
-    >
-      <!-- Nap -->
-      <ng-container matColumnDef="dayOfWeek">
-        <th mat-header-cell *matHeaderCellDef>Nap</th>
-        <td mat-cell *matCellDef="let lesson">
-          {{ mapDayToHungarian(lesson.dayOfWeek) }}
-        </td>
-      </ng-container>
+    <!-- 🟦 Vizuális órarend -->
+    <div class="timetable-wrapper" *ngIf="lessons.length > 0; else noLessons">
+      <!-- Idősáv oszlop bal oldalt -->
+      <div class="times-column">
+        <div class="time-label" *ngFor="let time of timeSlots">
+          {{ time }}
+        </div>
+      </div>
 
-      <!-- Tantárgy -->
-      <ng-container matColumnDef="className">
-        <th mat-header-cell *matHeaderCellDef>Tantárgy</th>
-        <td mat-cell *matCellDef="let lesson">{{ lesson.className }}</td>
-      </ng-container>
+      <!-- Rács a napokkal és órákkal -->
+      <div class="timetable-grid">
+        <!-- Napfejlécek -->
+        <div class="cell header" *ngFor="let day of weekDays">
+          {{ day }}
+        </div>
 
-      <!-- Tanár -->
-      <ng-container matColumnDef="teacher">
-        <th mat-header-cell *matHeaderCellDef>Tanár</th>
-        <td mat-cell *matCellDef="let lesson">{{ lesson.teacher }}</td>
-      </ng-container>
-
-      <!-- Időpont -->
-      <ng-container matColumnDef="time">
-        <th mat-header-cell *matHeaderCellDef>Időpont</th>
-        <td mat-cell *matCellDef="let lesson">
-          {{ lesson.startTime }} - {{ lesson.endTime }}
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
+        <!-- Órák -->
+        <div
+          *ngFor="let lesson of lessons"
+          class="lesson-card"
+          [style.gridColumn]="getColumn(lesson.dayOfWeek)"
+          [style.gridRow]="getRow(lesson.startTime) + ' / span ' + getRowSpan(lesson)"
+        >
+          <strong>{{ lesson.className }}</strong>
+          <div class="lesson-time">
+            {{ lesson.startTime }} - {{ lesson.endTime }}
+          </div>
+        </div>
+      </div>
+    </div>
 
     <ng-template #noLessons>
       <div class="schedule-placeholder">

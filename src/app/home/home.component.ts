@@ -8,11 +8,6 @@ import { LoggedHeaderComponent } from '../logged-header/logged-header.component'
 import { LessonService, Lesson } from '../services/lesson.service';
 import { ChangeDetectorRef, ApplicationRef } from '@angular/core';
 
-
-
-
-
-
 export interface Todo {
   text: string;
   done: boolean;
@@ -33,7 +28,7 @@ export interface Todo {
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  @ViewChild(MatTable) table?: MatTable<Lesson>; // 🔹 táblázat referenciája
+  @ViewChild(MatTable) table?: MatTable<Lesson>;
 
   lessons: Lesson[] = [];
   todos: Todo[] = [
@@ -44,6 +39,10 @@ export class HomeComponent implements OnInit {
 
   displayedColumns: string[] = ['dayOfWeek', 'className', 'teacher', 'time'];
   todoColumns: string[] = ['status', 'text'];
+
+  // 🟦 vizuális órarendhez
+  weekDays = ['Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek'];
+  timeSlots: string[] = [];
 
   constructor(
     private el: ElementRef,
@@ -56,7 +55,9 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.adjustLayout();
 
-    // Kis delay, hogy az interceptor és az auth service biztosan készen legyen
+    // 🟦 félórás idősávok generálása 08:00–20:00 között
+    this.generateTimeSlots('08:00', '20:00', 30);
+
     setTimeout(() => {
       const token = this.lessonService.auth.getToken();
 
@@ -71,7 +72,6 @@ export class HomeComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    // 👇 Chrome-nál néha kell egy extra tick az első megjelenés után
     setTimeout(() => this.appRef.tick(), 0);
   }
 
@@ -85,6 +85,41 @@ export class HomeComponent implements OnInit {
   }
 
   // ─────────────────────────────
+  // 🕒 Időkezelő segédfüggvények
+  // ─────────────────────────────
+  private toMinutes(t: string): number {
+    const m = t.match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?$/);
+    if (!m) return NaN;
+    const h = parseInt(m[1], 10);
+    const min = parseInt(m[2], 10);
+    return h * 60 + min;
+  }
+
+  private toHHmm(t: string): string {
+    const mins = this.toMinutes(t);
+    if (Number.isNaN(mins)) return t;
+    const h = Math.floor(mins / 60);
+    const m = mins % 60;
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+  }
+
+  // ─────────────────────────────
+  // 🟦 Idősáv generálás (félórás lépések)
+  // ─────────────────────────────
+  generateTimeSlots(start: string, end: string, stepMinutes: number) {
+    const [startHour, startMin] = start.split(':').map(Number);
+    const [endHour, endMin] = end.split(':').map(Number);
+    const startTotal = startHour * 60 + startMin;
+    const endTotal = endHour * 60 + endMin;
+
+    for (let t = startTotal; t <= endTotal; t += stepMinutes) {
+      const h = Math.floor(t / 60);
+      const m = t % 60;
+      this.timeSlots.push(`${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`);
+    }
+  }
+
+  // ─────────────────────────────
   // CRUD funkciók
   // ─────────────────────────────
   loadLessons(): void {
@@ -93,14 +128,16 @@ export class HomeComponent implements OnInit {
       next: (data) => {
         console.log('🟢 Backend válasz:', data);
 
+        // normalizáljuk az időformátumokat (HH:mm)
         this.lessons = data.map((lesson) => ({
           ...lesson,
-          dayOfWeek: this.mapDayToHungarian(lesson.dayOfWeek)
+          dayOfWeek: this.mapDayToHungarian(lesson.dayOfWeek),
+          startTime: this.toHHmm(lesson.startTime),
+          endTime: this.toHHmm(lesson.endTime)
         }));
 
         console.log('✅ Lessons feltöltve:', this.lessons);
 
-        // 🔧 Chrome: néha nem renderel újra → manuális frissítés
         setTimeout(() => {
           this.table?.renderRows();
           this.cdr.detectChanges();
@@ -142,5 +179,24 @@ export class HomeComponent implements OnInit {
       Friday: 'Péntek'
     };
     return map[day] || day;
+  }
+
+  // ─────────────────────────────
+  // 🟦 Segédfüggvények a vizuális rácshoz
+  // ─────────────────────────────
+  getColumn(day: string): number {
+    return this.weekDays.indexOf(day) + 2; // +1 az időoszlop, +1 mert 1-indexelt
+  }
+
+  getRow(time: string): number {
+    const t = this.toHHmm(time);
+    return this.timeSlots.indexOf(t) + 2;
+  }
+
+  getRowSpan(lesson: Lesson): number {
+    const start = this.toMinutes(lesson.startTime);
+    const end = this.toMinutes(lesson.endTime);
+    if (Number.isNaN(start) || Number.isNaN(end) || end <= start) return 1;
+    return Math.max(1, Math.ceil((end - start) / 30)); // 30 perces blokkok
   }
 }
