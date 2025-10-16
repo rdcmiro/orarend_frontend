@@ -23,6 +23,7 @@ export class LessonService {
     }
 
     getAllByUser(): Observable<Lesson[]> {
+        console.log('🟡 Lekérem az összes órát a felhasználóhoz');
         return this.http.get<Lesson[]>(`${this.apiUrl}/allUserLessons`);
     }
 
@@ -38,9 +39,10 @@ export class LessonService {
         return this.http.put<Lesson>(`${this.apiUrl}/update/${id}`, lesson);
     }
 
-    deleteLesson(id: number): Observable<void> {
-        return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
+    deleteLesson(id: number): Observable<any> {
+        return this.http.delete(`${this.apiUrl}/delete/${id}`, { responseType: 'text' });
     }
+
 
     getLessonById(id: number): Observable<Lesson> {
         return this.http.get<Lesson>(`${this.apiUrl}/get/${id}`);

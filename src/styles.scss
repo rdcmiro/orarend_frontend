@@ -2,3 +2,9 @@
 @use './styles/theme' as *;
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.custom-dialog .mat-mdc-dialog-surface {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+

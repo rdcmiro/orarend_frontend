@@ -8,7 +8,8 @@ import { LoggedHeaderComponent } from '../logged-header/logged-header.component'
 import { LessonService, Lesson } from '../services/lesson.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddLessonDialogComponent } from '../add-lesson-dialog/add-lesson-dialog.component';
-import { HttpStatusCode } from '@angular/common/http';
+import { LessonListDialogComponent } from '../lesson-list-dialog/lesson-list-dialog.component';
+import { UtilityService } from '../services/utility.service';
 
 export interface Todo {
   text: string;
@@ -52,7 +53,8 @@ export class HomeComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private appRef: ApplicationRef,
     private dialog: MatDialog,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private utils: UtilityService
   ) {}
 
   ngOnInit(): void {
@@ -128,17 +130,15 @@ export class HomeComponent implements OnInit {
 
     this.lessonService.getAllByUser().subscribe({
       next: (data) => {
-        console.log('🟢 Backend válasz:', data);
 
         this.ngZone.run(() => {
           // 🔹 új referencia, hogy Angular érzékelje
-          this.lessons = [...data.map((lesson) => ({
-            ...lesson,
-            dayOfWeek: this.mapDayToHungarian(lesson.dayOfWeek),
-            startTime: this.toHHmm(lesson.startTime),
-            endTime: this.toHHmm(lesson.endTime)
-          }))];
-
+        this.lessons = [...data.map((lesson) => ({
+          ...lesson,
+          dayOfWeek: this.utils.mapDayToHungarian(lesson.dayOfWeek),
+          startTime: this.utils.formatTime(lesson.startTime),
+          endTime: this.utils.formatTime(lesson.endTime)
+        }))];
           // 🔹 három szintű újrarajzolás: CD → Table → AppRef
           this.cdr.detectChanges();
           this.cdr.markForCheck();
@@ -165,7 +165,7 @@ export class HomeComponent implements OnInit {
         const newLesson = {
           className: result.className,
           teacher: result.teacher,
-          dayOfWeek: this.mapDayToEnglish(result.dayOfWeek),
+          dayOfWeek: this.utils.mapDayToEnglish(result.dayOfWeek),
           startTime: result.startTime,
           endTime: result.endTime
         };
@@ -187,32 +187,15 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  onDeleteLesson(id: number): void {
-    this.lessonService.deleteLesson(id).subscribe({
-      next: () => this.loadLessons()
+  onManageLessons(): void {
+    const dialogRef = this.dialog.open(LessonListDialogComponent, {
+      width: '700px',
+      panelClass: 'custom-dialog'
     });
-  }
 
-  mapDayToHungarian(day: string): string {
-    const map: Record<string, string> = {
-      Monday: 'Hétfő',
-      Tuesday: 'Kedd',
-      Wednesday: 'Szerda',
-      Thursday: 'Csütörtök',
-      Friday: 'Péntek'
-    };
-    return map[day] || day;
-  }
-
-  mapDayToEnglish(day: string): string {
-    const map: Record<string, string> = {
-      'Hétfő': 'Monday',
-      'Kedd': 'Tuesday',
-      'Szerda': 'Wednesday',
-      'Csütörtök': 'Thursday',
-      'Péntek': 'Friday'
-    };
-    return map[day] || day;
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadLessons();
+    });
   }
 
   getColumn(day: string): number {
