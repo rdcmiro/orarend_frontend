@@ -78,24 +78,31 @@
   </div>
 
   <!-- Jobb oldali sidebar -->
-  <div class="sidebar">
-    <button
-      mat-raised-button
-      color="accent"
-      class="add-button"
-      (click)="onAddLesson()"
-    >
-      + Óra hozzáadása
-    </button>
+<div class="sidebar">
+  <button
+    mat-raised-button
+    color="accent"
+    class="sidebar-button add-button"
+    (click)="onAddLesson()"
+  >
+    ➕ Óra hozzáadása
+  </button>
 
-    <button
-      mat-raised-button
-      color="warn"
-      class="manage-button"
-      (click)="onManageLessons()"
-      style="margin-top: 12px;"
-    >
-      🗑️ Órák kezelése
-    </button>
-  </div>
+  <button
+    mat-raised-button
+    color="warn"
+    class="sidebar-button manage-button"
+    (click)="onManageLessons()"
+  >
+    🗑️ Órák kezelése
+  </button>
+
+  <button
+    mat-raised-button
+    color="primary"
+    class="sidebar-button edit-button"
+    (click)="openEditLessonsDialog()"
+  >
+    ✏️ Órák szerkesztése
+  </button>
 </div>

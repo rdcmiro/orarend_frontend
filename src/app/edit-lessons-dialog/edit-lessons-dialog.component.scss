@@ -1,0 +1,162 @@
+:host {
+  display: block;
+  padding: 0;
+}
+
+/* ─────────────── Dialógus konténer ─────────────── */
+::ng-deep .mat-mdc-dialog-container {
+  border-radius: 16px !important;
+  padding: 0 !important;
+  overflow: hidden;
+  background-color: #ffffff !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  animation: fadeInScale 0.25s ease-out;
+}
+
+/* ─────────────── Animáció ─────────────── */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ─────────────── Cím ─────────────── */
+.dialog-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #1e3a8a;
+  text-align: center;
+  margin: 0 0 1.25rem 0;
+  padding-top: 1.8rem;
+}
+
+/* ─────────────── Törzs ─────────────── */
+.dialog-body {
+  padding: 1.2rem 1.5rem 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 60vh;
+  overflow-y: auto;
+  background: linear-gradient(135deg, #f5f7fa, #e6ecf3);
+}
+
+.lesson-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+/* ─────────────── Órakártyák ─────────────── */
+.lesson-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0.9rem 1.3rem;
+  color: #1e293b;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    background-color: #f8fafc;
+  }
+}
+
+.lesson-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+  padding-right: 1rem;
+}
+
+.lesson-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+  color: #0f172a;
+}
+
+.lesson-name {
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #1e3a8a;
+}
+
+.lesson-teacher {
+  opacity: 0.8;
+  font-size: 0.95rem;
+  color: #334155;
+}
+
+.lesson-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #475569;
+
+  .lesson-day {
+    font-weight: 500;
+  }
+
+  .lesson-time {
+    letter-spacing: 0.3px;
+  }
+}
+
+/* ─────────────── Gombok ─────────────── */
+.edit-button {
+  background-color: #2563eb !important;
+  color: white !important;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: 0.2s;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+
+  &:hover {
+    background-color: #1d4ed8 !important;
+    box-shadow: 0 0 8px rgba(37, 99, 235, 0.4);
+  }
+}
+
+/* ─────────────── Üres / betöltés állapot ─────────────── */
+.loading-block,
+.no-lessons {
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 1rem;
+  color: #1e3a8a;
+}
+
+/* ─────────────── Láb (actions) ─────────────── */
+.dialog-actions {
+  padding: 1rem 1.5rem 1.5rem 1.5rem;
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+button {
+  border-radius: 8px !important;
+  padding: 0.4rem 1.2rem !important;
+  font-weight: 500;
+}
+
+button[color='accent'] {
+  color: #1e3a8a;
+  border-color: #cbd5e1 !important;
+}

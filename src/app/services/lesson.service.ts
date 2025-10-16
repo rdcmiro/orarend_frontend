@@ -43,6 +43,10 @@ export class LessonService {
         return this.http.delete(`${this.apiUrl}/delete/${id}`, { responseType: 'text' });
     }
 
+    patchLesson(id: number, updates: Partial<Lesson>) {
+        return this.http.patch(`${this.apiUrl}/patch/${id}`, updates, {responseType: 'text'});    
+    }
+
 
     getLessonById(id: number): Observable<Lesson> {
         return this.http.get<Lesson>(`${this.apiUrl}/get/${id}`);

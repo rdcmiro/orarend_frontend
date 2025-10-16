@@ -189,9 +189,7 @@
   justify-content: flex-start;
   gap: 0.75rem;
 
-  /* Közös gombstílus */
-  .add-button,
-  .manage-button {
+  .sidebar-button {
     width: 100%;
     font-size: 0.95rem;
     font-weight: 600;
@@ -201,6 +199,15 @@
     transition: all 0.25s ease-in-out;
     letter-spacing: 0.3px;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+    text-transform: none;
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
   }
 
   /* 🟢 Óra hozzáadása */
@@ -210,12 +217,7 @@
 
     &:hover {
       background-color: #4caf50 !important;
-      transform: translateY(-2px);
       box-shadow: 0 6px 14px rgba(67, 160, 71, 0.5);
-    }
-
-    &:active {
-      transform: scale(0.98);
     }
   }
 
@@ -226,12 +228,19 @@
 
     &:hover {
       background-color: #f44336 !important;
-      transform: translateY(-2px);
       box-shadow: 0 6px 14px rgba(244, 67, 54, 0.5);
     }
+  }
 
-    &:active {
-      transform: scale(0.98);
+  /* 🔵 Órák szerkesztése */
+  .edit-button {
+    background-color: #1e88e5 !important;
+    box-shadow: 0 4px 10px rgba(30, 136, 229, 0.45);
+
+    &:hover {
+      background-color: #2196f3 !important;
+      box-shadow: 0 6px 14px rgba(33, 150, 243, 0.5);
     }
   }
 }
+

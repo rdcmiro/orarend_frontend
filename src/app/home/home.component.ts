@@ -18,6 +18,7 @@ import { LessonService, Lesson } from '../services/lesson.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddLessonDialogComponent } from '../add-lesson-dialog/add-lesson-dialog.component';
 import { LessonListDialogComponent } from '../lesson-list-dialog/lesson-list-dialog.component';
+import { EditLessonsDialogComponent } from '../edit-lessons-dialog/edit-lessons-dialog.component'; // ⬅️ új import
 import { UtilityService } from '../services/utility.service';
 import {
   trigger,
@@ -159,7 +160,6 @@ export class HomeComponent implements OnInit {
     this.lessonService.getAllByUser().subscribe({
       next: (data) => {
         this.ngZone.run(() => {
-          // 🔹 új referencia, hogy Angular érzékelje
           this.lessons = [
             ...data.map((lesson) => ({
               ...lesson,
@@ -223,12 +223,24 @@ export class HomeComponent implements OnInit {
       panelClass: 'custom-dialog'
     });
 
-    // 🔹 Real-time frissítés törlés után
     dialogRef.componentInstance.onLessonDeleted.subscribe(() => {
-      console.log('🟢 Óra törölve – frissítjük az órarendet valós időben');
       this.loadLessons();
     });
   }
+
+openEditLessonsDialog(): void {
+  const dialogRef = this.dialog.open(EditLessonsDialogComponent, {
+    width: '700px',
+    panelClass: 'custom-dialog'
+  });
+
+  
+  dialogRef.componentInstance.onLessonEdited.subscribe(() => {
+    this.loadLessons();
+  });
+}
+
+
 
   getColumn(day: string): number {
     return this.weekDays.indexOf(day) + 1;

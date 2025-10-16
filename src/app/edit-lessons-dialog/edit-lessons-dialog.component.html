@@ -1,0 +1,46 @@
+<h2 mat-dialog-title class="dialog-title">🗓️ Órák szerkesztése</h2>
+
+<div class="dialog-body" *ngIf="!loading; else loadingBlock">
+  <ng-container *ngIf="lessons.length > 0; else noLessons">
+    <div class="lesson-list">
+      <div *ngFor="let lesson of lessons" class="lesson-card">
+        <div class="lesson-info">
+          <div class="lesson-header">
+            <strong class="lesson-name">{{ lesson.className }}</strong>
+            <span class="lesson-teacher">{{ lesson.teacher }}</span>
+          </div>
+
+          <div class="lesson-details">
+            <span class="lesson-day">{{ lesson.dayOfWeek }}</span>
+            <span class="lesson-time">{{ lesson.startTime }} – {{ lesson.endTime }}</span>
+          </div>
+        </div>
+
+        <button
+          mat-raised-button
+          color="primary"
+          class="edit-button"
+          (click)="onEdit(lesson)"
+        >
+          ✏️ Módosítás
+        </button>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #loadingBlock>
+  <div class="loading-block">
+    <p>🔄 Betöltés...</p>
+  </div>
+</ng-template>
+
+<ng-template #noLessons>
+  <div class="no-lessons">
+    <p>📭 Nincs felvett óra.</p>
+  </div>
+</ng-template>
+
+<div mat-dialog-actions align="end" class="dialog-actions">
+  <button mat-stroked-button color="accent" mat-dialog-close>Bezárás</button>
+</div>
