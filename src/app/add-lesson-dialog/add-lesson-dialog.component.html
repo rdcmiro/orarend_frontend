@@ -1,13 +1,14 @@
-<h2 mat-dialog-title>Új óra hozzáadása</h2>
+<h2 mat-dialog-title class="dialog-title">📘 Új óra hozzáadása</h2>
+
 <div class="dialog-body">
   <mat-form-field appearance="outline">
     <mat-label>Tantárgy neve</mat-label>
-    <input matInput [(ngModel)]="className" />
+    <input matInput [(ngModel)]="className" placeholder="Pl. Matematika" />
   </mat-form-field>
 
   <mat-form-field appearance="outline">
     <mat-label>Tanár neve</mat-label>
-    <input matInput [(ngModel)]="teacher" />
+    <input matInput [(ngModel)]="teacher" placeholder="Pl. Kiss Péter" />
   </mat-form-field>
 
   <mat-form-field appearance="outline">
@@ -28,9 +29,9 @@
       <input matInput type="time" [(ngModel)]="endTime" />
     </mat-form-field>
   </div>
+</div>
 
-  <div class="actions">
-    <button mat-stroked-button color="warn" (click)="onCancel()">Mégse</button>
-    <button mat-raised-button color="primary" (click)="onSave()">Mentés</button>
-  </div>
+<div mat-dialog-actions class="actions">
+  <button mat-stroked-button color="warn" (click)="onCancel()">Mégse</button>
+  <button mat-raised-button color="primary" (click)="onSave()">Mentés</button>
 </div>
