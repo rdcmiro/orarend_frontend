@@ -1,4 +1,13 @@
-import { Component, OnInit, ElementRef, Renderer2, ViewChild, ChangeDetectorRef, ApplicationRef, NgZone } from '@angular/core';
+import { 
+  Component, 
+  OnInit, 
+  ElementRef, 
+  Renderer2, 
+  ViewChild, 
+  ChangeDetectorRef, 
+  ApplicationRef, 
+  NgZone 
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,6 +19,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddLessonDialogComponent } from '../add-lesson-dialog/add-lesson-dialog.component';
 import { LessonListDialogComponent } from '../lesson-list-dialog/lesson-list-dialog.component';
 import { UtilityService } from '../services/utility.service';
+import {
+  trigger,
+  transition,
+  style,
+  animate
+} from '@angular/animations';
 
 export interface Todo {
   text: string;
@@ -28,7 +43,20 @@ export interface Todo {
     LoggedHeaderComponent
   ],
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
+  animations: [
+    trigger('shrinkOut', [
+      transition(':leave', [
+        animate(
+          '300ms ease-in',
+          style({
+            transform: 'scale(0)',
+            opacity: 0
+          })
+        )
+      ])
+    ])
+  ]
 })
 export class HomeComponent implements OnInit {
   @ViewChild(MatTable) table?: MatTable<Lesson>;
@@ -130,15 +158,17 @@ export class HomeComponent implements OnInit {
 
     this.lessonService.getAllByUser().subscribe({
       next: (data) => {
-
         this.ngZone.run(() => {
           // 🔹 új referencia, hogy Angular érzékelje
-        this.lessons = [...data.map((lesson) => ({
-          ...lesson,
-          dayOfWeek: this.utils.mapDayToHungarian(lesson.dayOfWeek),
-          startTime: this.utils.formatTime(lesson.startTime),
-          endTime: this.utils.formatTime(lesson.endTime)
-        }))];
+          this.lessons = [
+            ...data.map((lesson) => ({
+              ...lesson,
+              dayOfWeek: this.utils.mapDayToHungarian(lesson.dayOfWeek),
+              startTime: this.utils.formatTime(lesson.startTime),
+              endTime: this.utils.formatTime(lesson.endTime)
+            }))
+          ];
+
           // 🔹 három szintű újrarajzolás: CD → Table → AppRef
           this.cdr.detectChanges();
           this.cdr.markForCheck();
@@ -171,7 +201,7 @@ export class HomeComponent implements OnInit {
         };
         this.lessonService.createLesson(newLesson).subscribe({
           next: (response) => {
-            console.log('🟢 Válasz érkezett a backendtől:', response);            
+            console.log('🟢 Válasz érkezett a backendtől:', response);
             console.log('🚀 Létrehozás sikeres, újratöltés...');
             this.loadLessons();
           },
@@ -193,7 +223,9 @@ export class HomeComponent implements OnInit {
       panelClass: 'custom-dialog'
     });
 
-    dialogRef.afterClosed().subscribe(() => {
+    // 🔹 Real-time frissítés törlés után
+    dialogRef.componentInstance.onLessonDeleted.subscribe(() => {
+      console.log('🟢 Óra törölve – frissítjük az órarendet valós időben');
       this.loadLessons();
     });
   }

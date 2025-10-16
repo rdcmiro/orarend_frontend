@@ -1,0 +1,15 @@
+[33m23826f7[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m Órák törlése dialog app. utility service hozzáadása
+[33m433159c[m timepicker kiszépítve, backend óra parsing hiba megoldva.
+[33mae7e8de[m Óra hozzáadása dialógus kicsinosítva
+[33m7113845[m KURVA KIÍRATÁS IS MŰKÖDIK.
+[33m184dfa9[m maradék
+[33mb53e044[m homepage kiigazítása. Szép.
+[33m42db447[m Merge branch 'master' of https://github.com/rdcmiro/orarend_frontend
+[33m11a443c[m Nagy nehezen megoldottam a chrome faszságát, miszerint nem rajzolja ki a táblázatot frissí- tés után. Most már megy, most már király.
+[33me748a62[m példa Ivannak
+[33m857efc1[m tokeninterceptor megoldása, ha lejár a token kilép. Emellett megoldva, hogy minden http hívásnál hozzáadja a tokent a headerhez.
+[33m7476995[m homepage ezennel készen van, következő lépés a token elmentése az angularban, majd pedig az órák lekérdezése a backendről.
+[33m67729f6[m A login és a regisztráció megoldva, globális stílusok hozzáadva
+[33m68e58cc[m login page megvan, home page is készül
+[33m6b28027[m initial commit
+[33mcc8b9a5[m initial commit
