@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 
 @Component({
   selector: 'app-add-lesson-dialog',
@@ -16,7 +17,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
+    NgxMatTimepickerModule
   ],
   templateUrl: './add-lesson-dialog.component.html',
   styleUrls: ['./add-lesson-dialog.component.scss']
@@ -29,6 +31,10 @@ export class AddLessonDialogComponent {
   endTime = '';
 
   weekDays = ['Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek'];
+
+  // ✅ Egyszerű stringes korlátok, nincs Luxon / Date típushiba
+  minTime = '08:00';
+  maxTime = '20:00';
 
   constructor(private dialogRef: MatDialogRef<AddLessonDialogComponent>) {}
 

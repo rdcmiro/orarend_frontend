@@ -21,17 +21,43 @@
   <div class="time-row">
     <mat-form-field appearance="outline">
       <mat-label>Kezdés</mat-label>
-      <input matInput type="time" [(ngModel)]="startTime" />
+      <input
+        matInput
+        readonly
+        [ngxMatTimepicker]="startPicker"
+        [(ngModel)]="startTime"
+        [format]="24"
+        [min]="minTime"
+        [max]="maxTime"
+        placeholder="Válassz időpontot"
+      />
+      <ngx-mat-timepicker
+        #startPicker
+        [minutesGap]="10"
+      ></ngx-mat-timepicker>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Befejezés</mat-label>
-      <input matInput type="time" [(ngModel)]="endTime" />
+      <input
+        matInput
+        readonly
+        [ngxMatTimepicker]="endPicker"
+        [(ngModel)]="endTime"
+        [format]="24"
+        [min]="minTime"
+        [max]="maxTime"
+        placeholder="Válassz időpontot"
+      />
+      <ngx-mat-timepicker
+        #endPicker
+        [minutesGap]="10"
+      ></ngx-mat-timepicker>
     </mat-form-field>
   </div>
 </div>
 
-<div mat-dialog-actions class="actions">
+<div class="actions">
   <button mat-stroked-button color="warn" (click)="onCancel()">Mégse</button>
   <button mat-raised-button color="primary" (click)="onSave()">Mentés</button>
 </div>
