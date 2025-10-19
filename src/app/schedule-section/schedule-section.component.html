@@ -1,0 +1,40 @@
+<div class="schedule-section">
+  <h2>Órarend</h2>
+
+  <div class="timetable-wrapper" *ngIf="lessons.length > 0; else noLessons">
+    <div class="times-column">
+      <div class="time-label" *ngFor="let time of timeSlots">{{ time }}</div>
+    </div>
+
+    <div class="timetable-grid">
+      <div class="cell header" *ngFor="let day of weekDays">
+        {{ day }}
+      </div>
+
+      <div
+        *ngFor="let lesson of lessons"
+        class="lesson-card"
+        [style.gridColumn]="getColumn(lesson.dayOfWeek)"
+        [style.gridRow]="getRow(lesson.startTime) + ' / span ' + getRowSpan(lesson)"
+        @shrinkOut
+      >
+        <strong>{{ lesson.className }}</strong>
+        <div class="lesson-time">
+          {{ lesson.startTime }} - {{ lesson.endTime }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noLessons>
+    <div class="schedule-placeholder">
+      📅 Nincs még óra felvéve.
+    </div>
+  </ng-template>
+
+  <div class="lesson-buttons">
+    <button mat-raised-button color="accent" (click)="onAddLesson()">➕ Új óra</button>
+    <button mat-raised-button color="warn" (click)="onManageLessons()">🗑️ Kezelés</button>
+    <button mat-raised-button color="primary" (click)="openEditLessonsDialog()">✏️ Szerkesztés</button>
+  </div>
+</div>

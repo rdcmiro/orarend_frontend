@@ -1,0 +1,54 @@
+<div class="todo-section">
+  <h2>Teendők</h2>
+
+  <button
+    mat-raised-button
+    color="accent"
+    class="add-todo-btn"
+    (click)="addTodo()"
+  >
+    ➕ Új teendő
+  </button>
+
+  <div class="todo-table-wrapper" *ngIf="todos.length > 0; else noTodos">
+    <table mat-table [dataSource]="todos" class="mat-elevation-z8 todo-table">
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef>Teendő</th>
+        <td mat-cell *matCellDef="let todo" [class.done]="todo.isItDone">
+          {{ todo.title }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Leírás</th>
+        <td mat-cell *matCellDef="let todo">
+          {{ todo.description || '-' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="localTime">
+        <th mat-header-cell *matHeaderCellDef>Hozzáadva</th>
+        <td mat-cell *matCellDef="let todo">
+          {{ todo.localTime | date: 'yyyy.MM.dd HH:mm' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="isItDone">
+        <th mat-header-cell *matHeaderCellDef>Kész?</th>
+        <td mat-cell *matCellDef="let todo">
+          <mat-checkbox [(ngModel)]="todo.isItDone" (change)="toggleTodo(todo)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="todoColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: todoColumns"></tr>
+    </table>
+  </div>
+
+  <ng-template #noTodos>
+    <div class="schedule-placeholder">
+      ✅ Minden kész, nincs teendő!
+    </div>
+  </ng-template>
+</div>

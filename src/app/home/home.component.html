@@ -2,107 +2,38 @@
 
 <div class="home-container">
   <!-- Bal: Órarend -->
-  <div class="schedule-section">
-    <h2>Órarend</h2>
-
-    <!-- 🟦 Vizuális órarend -->
-    <div class="timetable-wrapper" *ngIf="lessons.length > 0; else noLessons">
-      <!-- Idősáv oszlop bal oldalt -->
-      <div class="times-column">
-        <div class="time-label" *ngFor="let time of timeSlots">
-          {{ time }}
-        </div>
-      </div>
-
-      <!-- Rács a napokkal és órákkal -->
-      <div class="timetable-grid">
-        <!-- Napfejlécek -->
-        <div class="cell header" *ngFor="let day of weekDays">
-          {{ day }}
-        </div>
-
-        <!-- Órák -->
-        <div
-          *ngFor="let lesson of lessons"
-          class="lesson-card"
-          [style.gridColumn]="getColumn(lesson.dayOfWeek)"
-          [style.gridRow]="getRow(lesson.startTime) + ' / span ' + getRowSpan(lesson)"
-          @shrinkOut
-        >
-          <strong>{{ lesson.className }}</strong>
-          <div class="lesson-time">
-            {{ lesson.startTime }} - {{ lesson.endTime }}
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <ng-template #noLessons>
-      <div class="schedule-placeholder">
-        📅 Nincs még óra felvéve.
-      </div>
-    </ng-template>
-  </div>
+  <app-schedule-section></app-schedule-section>
 
   <!-- Közép: Teendők -->
-  <div class="todo-section">
-    <h2>Teendők</h2>
-
-    <table
-      mat-table
-      [dataSource]="todos"
-      class="mat-elevation-z8 lesson-table"
-      *ngIf="todos.length > 0; else noTodos"
-    >
-      <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef>Állapot</th>
-        <td mat-cell *matCellDef="let todo">
-          <mat-checkbox [(ngModel)]="todo.done"></mat-checkbox>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="text">
-        <th mat-header-cell *matHeaderCellDef>Teendő</th>
-        <td mat-cell *matCellDef="let todo">{{ todo.text }}</td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="todoColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: todoColumns"></tr>
-    </table>
-
-    <ng-template #noTodos>
-      <div class="schedule-placeholder">
-        ✅ Minden kész, nincs teendő!
-      </div>
-    </ng-template>
-  </div>
+  <app-todo-section></app-todo-section>
 
   <!-- Jobb oldali sidebar -->
-<div class="sidebar">
-  <button
-    mat-raised-button
-    color="accent"
-    class="sidebar-button add-button"
-    (click)="onAddLesson()"
-  >
-    ➕ Óra hozzáadása
-  </button>
+  <div class="sidebar">
+    <button
+      mat-raised-button
+      color="accent"
+      class="sidebar-button add-button"
+      (click)="onAddLesson()"
+    >
+      ➕ Óra hozzáadása
+    </button>
 
-  <button
-    mat-raised-button
-    color="warn"
-    class="sidebar-button manage-button"
-    (click)="onManageLessons()"
-  >
-    🗑️ Órák kezelése
-  </button>
+    <button
+      mat-raised-button
+      color="warn"
+      class="sidebar-button manage-button"
+      (click)="onManageLessons()"
+    >
+      🗑️ Órák kezelése
+    </button>
 
-  <button
-    mat-raised-button
-    color="primary"
-    class="sidebar-button edit-button"
-    (click)="openEditLessonsDialog()"
-  >
-    ✏️ Órák szerkesztése
-  </button>
+    <button
+      mat-raised-button
+      color="primary"
+      class="sidebar-button edit-button"
+      (click)="openEditLessonsDialog()"
+    >
+      ✏️ Órák szerkesztése
+    </button>
+  </div>
 </div>
