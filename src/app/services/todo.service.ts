@@ -8,7 +8,7 @@ export interface Todo {
     id?: number;
     title: string;
     description: string;
-    localTime: string;
+    dueTime: string;
     isItDone: boolean;
 }
 

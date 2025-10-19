@@ -1,0 +1,38 @@
+<h2 mat-dialog-title class="dialog-title">📝 Új teendő hozzáadása</h2>
+
+<div class="dialog-body">
+  <mat-form-field appearance="outline">
+    <mat-label>Cím</mat-label>
+    <input matInput [(ngModel)]="title" placeholder="Pl. Beadandó feltöltése" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Leírás</mat-label>
+    <textarea
+      matInput
+      [(ngModel)]="description"
+      placeholder="Pl. Feltölteni a beadandót a Teamsre"
+    ></textarea>
+  </mat-form-field>
+
+  <div class="time-row">
+    <mat-form-field appearance="outline">
+      <mat-label>Határidő dátuma</mat-label>
+      <input matInput [matDatepicker]="picker" [(ngModel)]="dueDate" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Időpont</mat-label>
+      <input matInput type="time" [(ngModel)]="dueTime" />
+    </mat-form-field>
+  </div>
+</div>
+
+<div class="actions">
+  <button mat-stroked-button color="warn" (click)="close()">Mégse</button>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="!title">
+    Mentés
+  </button>
+</div>

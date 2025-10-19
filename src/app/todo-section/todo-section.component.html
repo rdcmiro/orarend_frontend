@@ -1,45 +1,41 @@
 <div class="todo-section">
-  <h2>Teendők</h2>
+  <h2>📝 Teendők</h2>
 
-  <div class="todo-table-wrapper" *ngIf="todos.length > 0; else noTodos">
-    <table mat-table [dataSource]="todos" class="mat-elevation-z8 todo-table">
-      <ng-container matColumnDef="title">
-        <th mat-header-cell *matHeaderCellDef>Teendő</th>
-        <td mat-cell *matCellDef="let todo" [class.done]="todo.isItDone">
-          {{ todo.title }}
-        </td>
-      </ng-container>
 
-      <ng-container matColumnDef="description">
-        <th mat-header-cell *matHeaderCellDef>Leírás</th>
-        <td mat-cell *matCellDef="let todo">
-          {{ todo.description || '-' }}
-        </td>
-      </ng-container>
+  <div class="todo-list" [@listAnimation]="todos.length">
+    <div
+      class="todo-card"
+      *ngFor="let todo of todos"
+      [class.done]="todo.isItDone"
+    >
+      <div class="todo-header">
+        <h3>{{ todo.title }}</h3>
+        <mat-checkbox
+          [(ngModel)]="todo.isItDone"
+          (change)="toggleTodo(todo)"
+        ></mat-checkbox>
+      </div>
 
-      <ng-container matColumnDef="localTime">
-        <th mat-header-cell *matHeaderCellDef>Hozzáadva</th>
-        <td mat-cell *matCellDef="let todo">
-          {{ todo.localTime | date: 'yyyy.MM.dd HH:mm' }}
-        </td>
-      </ng-container>
+      <p class="description">{{ todo.description }}</p>
 
-      <ng-container matColumnDef="isItDone">
-        <th mat-header-cell *matHeaderCellDef>Kész?</th>
-        <td mat-cell *matCellDef="let todo">
-          <mat-checkbox [(ngModel)]="todo.isItDone" (change)="toggleTodo(todo)">
-          </mat-checkbox>
-        </td>
-      </ng-container>
+      <div class="footer">
+  <span
+    class="remaining"
+    [ngStyle]="{
+      color: getRemainingColor(todo),
+      borderColor: getRemainingColor(todo),
+      background: getRemainingColor(todo) + '22'
+    }"
+    [class.expired]="getRemainingTime(todo) === '⏰ Lejárt'"
+  >
+    ⏱ {{ getRemainingTime(todo) }}
+  </span>
+</div>
 
-      <tr mat-header-row *matHeaderRowDef="todoColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: todoColumns"></tr>
-    </table>
-  </div>
-
-  <ng-template #noTodos>
-    <div class="schedule-placeholder">
-      ✅ Minden kész, nincs teendő!
     </div>
-  </ng-template>
+
+    <div *ngIf="todos.length === 0" class="schedule-placeholder">
+      Nincs még teendő. Adj hozzá egyet!
+    </div>
+  </div>
 </div>

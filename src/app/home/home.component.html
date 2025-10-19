@@ -9,6 +9,17 @@
 
   <!-- Jobb oldali sidebar -->
   <div class="sidebar">
+    <!-- 📝 Új teendő hozzáadása -->
+    <button
+      mat-raised-button
+      color="accent"
+      class="sidebar-button todo-button"
+      (click)="onAddTodo()"
+      style="margin-bottom: 0.8rem"
+    >
+      📝 Teendő hozzáadása
+    </button>
+
     <button
       mat-raised-button
       color="accent"
