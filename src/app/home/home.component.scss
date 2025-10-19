@@ -82,12 +82,20 @@
   }
 
   /* ─────────────────────────────── */
-  /*  Új: Teendő hozzáadása gomb stílusa */
+  /*  Új: vizuális elválasztó a gombcsoportok között */
+  /* ─────────────────────────────── */
+  .sidebar-separator {
+    height: 1.2rem; /* 🔹 ez adja a plusz távolságot */
+    flex-shrink: 0;
+  }
+
+  /* ─────────────────────────────── */
+  /*  Teendő hozzáadása gomb stílusa */
   /* ─────────────────────────────── */
   .todo-button {
     background-color: #43a047 !important;
     box-shadow: 0 4px 10px rgba(67, 160, 71, 0.45);
-    margin-bottom: 0.8rem; /* 🔹 kis extra tér a többi gomb előtt */
+    margin-bottom: 0.8rem;
 
     &:hover {
       background-color: #4caf50 !important;

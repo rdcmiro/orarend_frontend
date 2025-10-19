@@ -9,17 +9,7 @@
 
   <!-- Jobb oldali sidebar -->
   <div class="sidebar">
-    <!-- 📝 Új teendő hozzáadása -->
-    <button
-      mat-raised-button
-      color="accent"
-      class="sidebar-button todo-button"
-      (click)="onAddTodo()"
-      style="margin-bottom: 0.8rem"
-    >
-      📝 Teendő hozzáadása
-    </button>
-
+    <!-- 🔹 Órarendhez tartozó gombok -->
     <button
       mat-raised-button
       color="accent"
@@ -45,6 +35,17 @@
       (click)="openEditLessonsDialog()"
     >
       ✏️ Órák szerkesztése
+    </button>
+
+    <!-- 🔹 Teendő gomb az órarend gombok alatt -->
+    <button
+      mat-raised-button
+      color="accent"
+      class="sidebar-button todo-button"
+      (click)="onAddTodo()"
+      style="margin-top: 5rem"
+    >
+      📝 Teendő hozzáadása
     </button>
   </div>
 </div>

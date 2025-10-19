@@ -4,7 +4,6 @@ import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
-import { Subject } from 'rxjs';
 import { LessonService, Lesson } from '../services/lesson.service';
 import { UtilityService } from '../services/utility.service';
 import { EditLessonDialogComponent } from '../edit-lesson-dialog/edit-lesson-dialog.component';

@@ -1,0 +1,62 @@
+<app-logged-header></app-logged-header>
+
+<div class="home-container">
+  <div class="file-page">
+    <h2 class="page-title">📄 Fájlok és AI összefoglalás</h2>
+
+    <!-- 📤 Feltöltés blokk -->
+    <div class="upload-card">
+      <h3>📤 Fájl feltöltése</h3>
+      <div class="upload-row">
+        <input type="file" (change)="onSelect($event)" />
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="onUpload()"
+          [disabled]="!selectedFile || loading"
+        >
+          Feltöltés
+        </button>
+      </div>
+    </div>
+
+    <!-- 📋 Fájl lista -->
+    <div class="files-card" *ngIf="hasLoaded && files.length > 0; else noFiles">
+      <h3>📂 Fájljaid</h3>
+
+      <div
+        class="file-item"
+        *ngFor="let file of files"
+        [@listAnimation]
+        [class.selected]="file.selected"
+      >
+        <mat-checkbox [(ngModel)]="file.selected"></mat-checkbox>
+        <div class="file-info">
+          <strong>{{ file.filename }}</strong>
+          <span class="meta">{{ file.uploadedAt | date: 'yyyy.MM.dd. HH:mm' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noFiles>
+      <p class="empty">Még nincsenek feltöltött fájljaid.</p>
+    </ng-template>
+
+    <!-- 🧠 Összefoglalás -->
+    <div class="actions" *ngIf="uploadedFileId">
+      <button
+        mat-raised-button
+        color="accent"
+        class="summarize-button"
+        (click)="onSummarize()"
+        [disabled]="loading"
+      >
+        🧠 Összefoglalás
+      </button>
+    </div>
+
+    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+
+    <pre class="result" *ngIf="summaryText">{{ summaryText }}</pre>
+  </div>
+</div>
