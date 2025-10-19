@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone, ChangeDetectorRef, ApplicationRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone, ChangeDetectorRef, ApplicationRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTable } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -30,12 +30,14 @@ import { trigger, transition, style, animate } from '@angular/animations';
     ])
   ]
 })
-export class ScheduleSectionComponent implements OnInit {
+export class ScheduleSectionComponent implements OnInit, OnDestroy {
   @ViewChild(MatTable) table?: MatTable<Lesson>;
 
   lessons: Lesson[] = [];
   weekDays = ['Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek'];
   timeSlots: string[] = [];
+
+  private resizeTimeout: any;
 
   constructor(
     private lessonService: LessonService,
@@ -49,6 +51,24 @@ export class ScheduleSectionComponent implements OnInit {
   ngOnInit(): void {
     this.generateTimeSlots('08:00', '20:00', 30);
     this.loadLessons();
+
+    // 🧩 Simított újrarajzolás képernyőméret-változáskor
+    window.addEventListener('resize', this.debouncedResize.bind(this));
+  }
+
+  ngOnDestroy(): void {
+    // 🧹 Eseményfigyelő eltávolítása memóriaszivárgás elkerülésére
+    window.removeEventListener('resize', this.debouncedResize.bind(this));
+    clearTimeout(this.resizeTimeout);
+  }
+
+  private debouncedResize() {
+    clearTimeout(this.resizeTimeout);
+    this.resizeTimeout = setTimeout(() => {
+      this.ngZone.run(() => {
+        this.cdr.detectChanges();
+      });
+    }, 200);
   }
 
   // 🟦 Idősáv generálás
@@ -66,31 +86,42 @@ export class ScheduleSectionComponent implements OnInit {
   }
 
   // 🟩 Lekérések
-  loadLessons(): void {
-    console.log('🟡 Órák lekérése...');
+loadLessons(): void {
+  console.log('🟡 Órák lekérése...');
 
-    this.lessonService.getAllByUser().subscribe({
-      next: (data) => {
-        this.ngZone.run(() => {
-          this.lessons = [
-            ...data.map((lesson) => ({
-              ...lesson,
-              dayOfWeek: this.utils.mapDayToHungarian(lesson.dayOfWeek),
-              startTime: this.utils.formatTime(lesson.startTime),
-              endTime: this.utils.formatTime(lesson.endTime)
-            }))
-          ];
+  this.lessonService.getAllByUser().subscribe({
+    next: (data) => {
+      this.ngZone.run(() => {
+        // 🔹 Védelem: ha null / string / nem tömb → üres lista
+        if (!Array.isArray(data)) {
+          this.lessons = [];
+          this.cdr.markForCheck();
+          return;
+        }
 
-          this.cdr.detectChanges();
-          this.table?.renderRows();
-          this.appRef.tick();
+        this.lessons = data.map((lesson) => ({
+          ...lesson,
+          dayOfWeek: this.utils.mapDayToHungarian(lesson.dayOfWeek),
+          startTime: this.utils.formatTime(lesson.startTime),
+          endTime: this.utils.formatTime(lesson.endTime)
+        }));
 
-          console.log('✅ Lessons újratöltve.');
-        });
-      },
-      error: (err) => console.error('🔴 Hiba az órák lekérésekor:', err)
-    });
-  }
+        this.table?.renderRows();
+        this.cdr.markForCheck();
+      });
+    },
+    error: (err) => {
+      console.error('🔴 Hiba az órák lekérésekor:', err);
+      this.ngZone.run(() => {
+        // 🔹 Ha hiba van (pl. nincs több óra a usernek), mutassunk üres órarendet
+        this.lessons = [];
+        this.cdr.markForCheck();
+      });
+    }
+  });
+}
+
+
 
   // 🟢 CRUD műveletek
   onAddLesson(): void {
@@ -126,20 +157,21 @@ export class ScheduleSectionComponent implements OnInit {
     });
 
     dialogRef.componentInstance.onLessonDeleted.subscribe(() => {
-      this.loadLessons();
+      this.ngZone.run(() => this.loadLessons()); // ✅ mindig zónán belül frissít
     });
   }
 
   openEditLessonsDialog(): void {
-    const dialogRef = this.dialog.open(EditLessonsDialogComponent, {
-      width: '700px',
-      panelClass: 'custom-dialog'
-    });
+  const dialogRef = this.dialog.open(EditLessonsDialogComponent, {
+    width: '700px',
+    panelClass: 'custom-dialog'
+  });
 
-    dialogRef.componentInstance.onLessonEdited.subscribe(() => {
-      this.loadLessons();
-    });
-  }
+  dialogRef.componentInstance.onLessonEdited.subscribe(() => {
+    this.ngZone.run(() => this.loadLessons()); // ✅ zónán belül frissít
+  });
+}
+
 
   // 📅 Rács segédfüggvények
   getColumn(day: string): number {

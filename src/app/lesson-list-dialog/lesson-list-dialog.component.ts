@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, EventEmitter, Output } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { LessonService, Lesson } from '../services/lesson.service';
 import { CommonModule } from '@angular/common';
@@ -38,7 +38,7 @@ export class LessonListDialogComponent implements OnInit {
   loading = true;
 
   // 🔹 Ezt figyeli majd a HomeComponent
-  onLessonDeleted = new Subject<void>();
+@Output() onLessonDeleted = new EventEmitter<void>();
 
   constructor(
     private lessonService: LessonService,
@@ -83,7 +83,8 @@ export class LessonListDialogComponent implements OnInit {
       next: () => {
         this.ngZone.run(() => {
           this.lessons = this.lessons.filter(l => l.id !== id);
-          this.onLessonDeleted.next(); // 🔹 értesíti a HomeComponentet
+          console.log('🟢 Óra törölve, lista frissítve, emitting');
+          this.onLessonDeleted.emit(); // 🔹 értesíti a HomeComponentet
         });
       },
       error: (err) => alert('❌ Hiba történt: ' + err.message)

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -25,7 +25,7 @@ import { EditLessonDialogComponent } from '../edit-lesson-dialog/edit-lesson-dia
 export class EditLessonsDialogComponent implements OnInit {
   lessons: Lesson[] = [];
   loading: boolean = false; // 🔹 hozzáadva a HTML-hez
-  onLessonEdited = new Subject<void>(); // 🔹 HomeComponent figyeli majd
+  @Output() onLessonEdited = new EventEmitter<void>(); // 🔹 HomeComponent figyeli majd
 
   constructor(
     private lessonService: LessonService,
@@ -80,7 +80,7 @@ export class EditLessonsDialogComponent implements OnInit {
           next: () => {
             console.log('🟢 Óra frissítve – újratöltjük és jelezzük a Home-nak');
             this.loadLessons();
-            this.onLessonEdited.next(); // 🔹 értesítés a HomeComponentnek
+            this.onLessonEdited.emit(); // 🔹 értesítés a HomeComponentnek
           },
           error: (err: any) => console.error('❌ Hiba a mentésnél:', err)
         });

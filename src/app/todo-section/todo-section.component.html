@@ -1,15 +1,6 @@
 <div class="todo-section">
   <h2>Teendők</h2>
 
-  <button
-    mat-raised-button
-    color="accent"
-    class="add-todo-btn"
-    (click)="addTodo()"
-  >
-    ➕ Új teendő
-  </button>
-
   <div class="todo-table-wrapper" *ngIf="todos.length > 0; else noTodos">
     <table mat-table [dataSource]="todos" class="mat-elevation-z8 todo-table">
       <ng-container matColumnDef="title">
