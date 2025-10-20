@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
+import { Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-add-lesson-dialog',
@@ -24,6 +25,11 @@ import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
   styleUrls: ['./add-lesson-dialog.component.scss']
 })
 export class AddLessonDialogComponent {
+  @Output() onLessonEdited = new EventEmitter<void>();
+
+
+  isEditMode = false;
+
   className = '';
   teacher = '';
   dayOfWeek = '';

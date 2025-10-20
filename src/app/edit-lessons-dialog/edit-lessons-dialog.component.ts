@@ -6,7 +6,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { LessonService, Lesson } from '../services/lesson.service';
 import { UtilityService } from '../services/utility.service';
-import { EditLessonDialogComponent } from '../edit-lesson-dialog/edit-lesson-dialog.component';
+import { AddLessonDialogComponent } from '../add-lesson-dialog/add-lesson-dialog.component';
 
 @Component({
   selector: 'app-edit-lessons-dialog',
@@ -61,29 +61,36 @@ export class EditLessonsDialogComponent implements OnInit {
   // ─────────────────────────────
   // ✏️ Óra szerkesztése dialógusban
   // ─────────────────────────────
-  onEdit(lesson: Lesson): void {
-    const dialogRef = this.dialog.open(EditLessonDialogComponent, {
-      width: '400px',
-      data: { ...lesson }
-    });
+onEdit(lesson: Lesson): void {
+  const dialogRef = this.dialog.open(AddLessonDialogComponent, {
+    width: '400px',
+    panelClass: 'custom-dialog'
+  });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        // 🔹 magyar → angol napnév konverzió backendnek
-        const patchData = {
-          ...result,
-          dayOfWeek: this.utils.mapDayToEnglish(result.dayOfWeek)
-        };
+  dialogRef.componentInstance.isEditMode = true;
+  dialogRef.componentInstance.className = lesson.className;
+  dialogRef.componentInstance.teacher = lesson.teacher;
+  dialogRef.componentInstance.dayOfWeek = lesson.dayOfWeek;
+  dialogRef.componentInstance.startTime = lesson.startTime;
+  dialogRef.componentInstance.endTime = lesson.endTime;
 
-        this.lessonService.patchLesson(lesson.id!, patchData).subscribe({
-          next: () => {
-            console.log('🟢 Óra frissítve – újratöltjük és jelezzük a Home-nak');
-            this.loadLessons();
-            this.onLessonEdited.emit(); // 🔹 értesítés a HomeComponentnek
-          },
-          error: (err: any) => console.error('❌ Hiba a mentésnél:', err)
-        });
-      }
-    });
-  }
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      const patchData = {
+        ...result,
+        dayOfWeek: this.utils.mapDayToEnglish(result.dayOfWeek)
+      };
+
+      this.lessonService.patchLesson(lesson.id!, patchData).subscribe({
+        next: () => {
+          console.log('🟢 Óra frissítve – újratöltjük és jelezzük a Home-nak');
+          this.loadLessons();
+          this.onLessonEdited.emit();
+        },
+        error: err => console.error('❌ Hiba a mentésnél:', err)
+      });
+    }
+  });
+}
+
 }

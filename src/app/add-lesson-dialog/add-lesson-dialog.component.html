@@ -1,4 +1,6 @@
-<h2 mat-dialog-title class="dialog-title">📘 Új óra hozzáadása</h2>
+<h2 mat-dialog-title class="dialog-title">
+  {{ isEditMode ? '✏️ Óra szerkesztése' : '📘 Új óra hozzáadása' }}
+</h2>
 
 <div class="dialog-body">
   <mat-form-field appearance="outline">
@@ -31,10 +33,7 @@
         [max]="maxTime"
         placeholder="Válassz időpontot"
       />
-      <ngx-mat-timepicker
-        #startPicker
-        [minutesGap]="10"
-      ></ngx-mat-timepicker>
+      <ngx-mat-timepicker #startPicker [minutesGap]="10"></ngx-mat-timepicker>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
@@ -49,10 +48,7 @@
         [max]="maxTime"
         placeholder="Válassz időpontot"
       />
-      <ngx-mat-timepicker
-        #endPicker
-        [minutesGap]="10"
-      ></ngx-mat-timepicker>
+      <ngx-mat-timepicker #endPicker [minutesGap]="10"></ngx-mat-timepicker>
     </mat-form-field>
   </div>
 </div>
