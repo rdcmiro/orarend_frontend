@@ -73,7 +73,15 @@ export class TodoSectionComponent implements OnInit, OnDestroy {
     this.todoService.getAllByUser().subscribe({
       next: (data) => {
         this.ngZone.run(() => {
-          this.todos = data;
+          // 🔹 Rendezzük a teendőket határidő szerint (a legkorábbi elöl)
+          this.todos = data
+            .sort((a, b) => {
+              if (!a.dueTime && !b.dueTime) return 0;
+              if (!a.dueTime) return 1;
+              if (!b.dueTime) return -1;
+              return new Date(a.dueTime).getTime() - new Date(b.dueTime).getTime();
+            });
+
           this.cdr.detectChanges();
         });
       },

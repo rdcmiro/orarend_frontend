@@ -12,6 +12,7 @@
   justify-content: flex-start;
   height: 100%;
   max-height: calc(100vh - 130px);
+  overflow-y: auto;
   overflow: hidden;
   transition: all 0.3s ease-in-out;
   backdrop-filter: blur(10px);
@@ -72,22 +73,33 @@
 
   /* ─────────────── Lista ─────────────── */
   .todo-list {
-    flex: 1;
-    overflow-y: auto;
-    padding-right: 0.3rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 0.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
 
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background-color: rgba(100, 181, 246, 0.5);
-      border-radius: 4px;
-    }
+  /* 🔹 Scrollbar stílus – KÉK */
+  &::-webkit-scrollbar {
+    width: 8px;
   }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(100, 181, 246, 0.5); /* világító kék */
+    border-radius: 8px;
+    transition: background 0.25s ease;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 181, 246, 0.8);
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(15, 25, 35, 0.4);
+  }
+}
+
 
   /* ─────────────── Kártyák ─────────────── */
   .todo-card {
@@ -177,3 +189,5 @@
     text-shadow: 0 0 6px rgba(100, 181, 246, 0.25);
   }
 }
+
+
