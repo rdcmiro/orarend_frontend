@@ -11,6 +11,8 @@ import { TodoSectionComponent } from '../todo-section/todo-section.component';
 import { ScheduleSectionComponent } from '../schedule-section/schedule-section.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AddTodoDialogComponent } from '../todo-section/add-todo-dialog/add-todo-dialog.component';
+import { MatButton } from "@angular/material/button";
+import { TodoListDialogComponent } from '../todo-list-dialog/todo-list-dialog.component';
 
 @Component({
   selector: 'app-home',
@@ -20,8 +22,9 @@ import { AddTodoDialogComponent } from '../todo-section/add-todo-dialog/add-todo
     LoggedHeaderComponent,
     TodoSectionComponent,
     ScheduleSectionComponent,
-    MatDialogModule
-  ],
+    MatDialogModule,
+    MatButton
+],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
@@ -82,6 +85,19 @@ export class HomeComponent implements OnInit {
         // 🔹 A TodoSection saját metódusával kezeljük a mentést és frissítést
         this.todoSection.addNewTodo(newTodo);
       }
+    });
+  }
+
+  onManageToDo(): void {
+    const dialogRef = this.dialog.open(TodoListDialogComponent, {
+      width: '700px',
+      panelClass: 'custom-dialog'
+    });
+
+    // 🔸 Ha a teendők listája változott (törlés / státuszváltás stb.)
+    dialogRef.componentInstance.onTodoChanged.subscribe(() => {
+      console.log('🟢 Teendő változás észlelve → lista frissítése');
+      this.todoSection.loadTodos(); // a meglévő todo-section metódus
     });
   }
 }

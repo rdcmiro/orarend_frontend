@@ -1,0 +1,73 @@
+<h2 mat-dialog-title class="dialog-title">🗓️ Teendők kezelése</h2>
+
+<div class="dialog-body" *ngIf="!loading; else loadingBlock">
+  <ng-container *ngIf="todos.length > 0; else noTodos">
+    <div class="todo-list">
+      <div
+        *ngFor="let todo of todos"
+        class="todo-card"
+        [class.done]="todo.isItDone"
+        [@shrinkOut]
+      >
+        <!-- Fejléc: cím + checkbox -->
+        <div class="todo-header">
+          <h3 class="todo-title">{{ todo.title }}</h3>
+          <mat-checkbox
+            [checked]="todo.isItDone"
+            (change)="toggleDone(todo)"
+            color="primary"
+          ></mat-checkbox>
+        </div>
+
+        <!-- Leírás -->
+        <p class="description">{{ todo.description }}</p>
+
+        <!-- Láb: hátralévő idő badge -->
+        <div class="footer">
+          <span
+            class="remaining"
+            [ngStyle]="{
+              color: getRemainingColor(todo),
+              borderColor: getRemainingColor(todo),
+              background: getRemainingColor(todo) + '22'
+            }"
+            [class.expired]="getRemainingTime(todo) === '⏰ Lejárt'"
+          >
+            ⏱ {{ getRemainingTime(todo) }}
+          </span>
+        </div>
+
+        <!-- Törlés gomb -->
+        <button
+          mat-raised-button
+          color="warn"
+          class="delete-button"
+          (click)="deleteTodo(todo.id!)"
+        >
+          🗑️ Törlés
+        </button>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<!-- Betöltés -->
+<ng-template #loadingBlock>
+  <div class="loading-block">
+    <p>🔄 Betöltés...</p>
+  </div>
+</ng-template>
+
+<!-- Üres lista -->
+<ng-template #noTodos>
+  <div class="no-todos">
+    <p>📭 Nincs felvett teendő.</p>
+  </div>
+</ng-template>
+
+<!-- Láb (bezárás gomb) -->
+<div mat-dialog-actions align="end" class="dialog-actions">
+  <button mat-stroked-button color="accent" (click)="close()">
+    Bezárás
+  </button>
+</div>
