@@ -1,57 +1,59 @@
-<h2 mat-dialog-title class="dialog-title">✏️ Óra szerkesztése</h2>
+<div class="dialog-theme">
+  <h2 mat-dialog-title class="dialog-title">✏️ Óra szerkesztése</h2>
 
-<div class="dialog-body">
-  <mat-form-field appearance="outline">
-    <mat-label>Tantárgy neve</mat-label>
-    <input matInput [(ngModel)]="className" placeholder="Pl. Matematika" />
-  </mat-form-field>
-
-  <mat-form-field appearance="outline">
-    <mat-label>Tanár neve</mat-label>
-    <input matInput [(ngModel)]="teacher" placeholder="Pl. Kiss Péter" />
-  </mat-form-field>
-
-  <mat-form-field appearance="outline">
-    <mat-label>Nap</mat-label>
-    <mat-select [(ngModel)]="dayOfWeek">
-      <mat-option *ngFor="let day of weekDays" [value]="day">{{ day }}</mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <div class="time-row">
+  <div class="dialog-body">
     <mat-form-field appearance="outline">
-      <mat-label>Kezdés</mat-label>
-      <input
-        matInput
-        readonly
-        [ngxMatTimepicker]="startPicker"
-        [(ngModel)]="startTime"
-        [format]="24"
-        [min]="minTime"
-        [max]="maxTime"
-        placeholder="Válassz időpontot"
-      />
-      <ngx-mat-timepicker #startPicker [minutesGap]="10"></ngx-mat-timepicker>
+      <mat-label>Tantárgy neve</mat-label>
+      <input matInput [(ngModel)]="className" placeholder="Pl. Matematika" />
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Befejezés</mat-label>
-      <input
-        matInput
-        readonly
-        [ngxMatTimepicker]="endPicker"
-        [(ngModel)]="endTime"
-        [format]="24"
-        [min]="minTime"
-        [max]="maxTime"
-        placeholder="Válassz időpontot"
-      />
-      <ngx-mat-timepicker #endPicker [minutesGap]="10"></ngx-mat-timepicker>
+      <mat-label>Tanár neve</mat-label>
+      <input matInput [(ngModel)]="teacher" placeholder="Pl. Kiss Péter" />
     </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Nap</mat-label>
+      <mat-select [(ngModel)]="dayOfWeek">
+        <mat-option *ngFor="let day of weekDays" [value]="day">{{ day }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="time-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Kezdés</mat-label>
+        <input
+          matInput
+          readonly
+          [ngxMatTimepicker]="startPicker"
+          [(ngModel)]="startTime"
+          [format]="24"
+          [min]="minTime"
+          [max]="maxTime"
+          placeholder="Válassz időpontot"
+        />
+        <ngx-mat-timepicker #startPicker [minutesGap]="10"></ngx-mat-timepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Befejezés</mat-label>
+        <input
+          matInput
+          readonly
+          [ngxMatTimepicker]="endPicker"
+          [(ngModel)]="endTime"
+          [format]="24"
+          [min]="minTime"
+          [max]="maxTime"
+          placeholder="Válassz időpontot"
+        />
+        <ngx-mat-timepicker #endPicker [minutesGap]="10"></ngx-mat-timepicker>
+      </mat-form-field>
+    </div>
   </div>
-</div>
 
-<div class="actions">
-  <button mat-stroked-button color="warn" (click)="onCancel()">Mégse</button>
-  <button mat-raised-button color="primary" (click)="onSave()">Mentés</button>
+  <div class="actions">
+    <button mat-stroked-button color="warn" (click)="onCancel()">Mégse</button>
+    <button mat-raised-button color="primary" (click)="onSave()">Mentés</button>
+  </div>
 </div>

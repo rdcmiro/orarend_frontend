@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -22,7 +22,8 @@ import { Lesson } from '../services/lesson.service';
     NgxMatTimepickerModule
   ],
   templateUrl: './edit-lesson-dialog.component.html',
-  styleUrls: ['./edit-lesson-dialog.component.scss']
+  styleUrls: ['./edit-lesson-dialog.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class EditLessonDialogComponent {
   className = '';

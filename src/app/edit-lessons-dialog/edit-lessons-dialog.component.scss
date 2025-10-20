@@ -1,73 +1,103 @@
 :host {
   display: block;
   padding: 0;
+  color: #f5f9ff;
 }
 
 /* ─────────────── Dialógus konténer ─────────────── */
 ::ng-deep .mat-mdc-dialog-container {
-  border-radius: 16px !important;
+  border-radius: 18px !important;
   padding: 0 !important;
   overflow: hidden;
-  background-color: #ffffff !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  background: rgba(10, 15, 25, 0.97) !important;
+  box-shadow:
+    0 0 25px rgba(33, 150, 243, 0.35),
+    inset 0 0 8px rgba(33, 150, 243, 0.15);
+  border: 1px solid rgba(100, 181, 246, 0.25);
+  backdrop-filter: blur(14px);
   animation: fadeInScale 0.25s ease-out;
+  color: #f5f9ff !important;
 }
 
 /* ─────────────── Animáció ─────────────── */
 @keyframes fadeInScale {
   from {
     opacity: 0;
-    transform: scale(0.9);
+    transform: scale(0.92);
   }
   to {
     opacity: 1;
+    transform: scale(1);
   }
 }
 
 /* ─────────────── Cím ─────────────── */
 .dialog-title {
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: #1e3a8a;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #82cfff;
   text-align: center;
   margin: 0 0 1.25rem 0;
   padding-top: 1.8rem;
+  letter-spacing: 0.5px;
+  text-shadow:
+    0 0 10px rgba(130, 207, 255, 0.7),
+    0 0 25px rgba(100, 181, 246, 0.4);
+  animation: neonPulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes neonPulse {
+  0% {
+    text-shadow:
+      0 0 6px rgba(130, 207, 255, 0.5),
+      0 0 10px rgba(100, 181, 246, 0.3);
+  }
+  100% {
+    text-shadow:
+      0 0 15px rgba(130, 207, 255, 0.9),
+      0 0 25px rgba(100, 181, 246, 0.6);
+  }
 }
 
 /* ─────────────── Törzs ─────────────── */
 .dialog-body {
-  padding: 1.2rem 1.5rem 1rem 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  padding: 0 1.5rem 1.2rem 1.5rem;
+  background: linear-gradient(
+    145deg,
+    rgba(10, 20, 35, 0.92),
+    rgba(8, 14, 25, 0.9)
+  );
+  color: #f5f9ff;
   max-height: 60vh;
   overflow-y: auto;
-  background: linear-gradient(135deg, #f5f7fa, #e6ecf3);
 }
 
+/* ─────────────── Órakártyák ─────────────── */
 .lesson-list {
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
 }
 
-/* ─────────────── Órakártyák ─────────────── */
 .lesson-card {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(130, 207, 255, 0.2);
   border-radius: 12px;
   padding: 0.9rem 1.3rem;
-  color: #1e293b;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
-  transition: all 0.2s ease-in-out;
+  color: #e3f2fd;
+  box-shadow: 0 0 12px rgba(33, 150, 243, 0.1);
+  transition: all 0.25s ease-in-out;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-    background-color: #f8fafc;
+    background: rgba(25, 118, 210, 0.15);
+    box-shadow: 0 0 18px rgba(100, 181, 246, 0.3);
   }
 }
 
@@ -84,19 +114,19 @@
   justify-content: space-between;
   align-items: center;
   font-size: 1rem;
-  color: #0f172a;
 }
 
 .lesson-name {
   font-weight: 600;
   font-size: 1.05rem;
-  color: #1e3a8a;
+  color: #90caf9;
+  text-shadow: 0 0 8px rgba(144, 202, 249, 0.6);
 }
 
 .lesson-teacher {
-  opacity: 0.8;
+  opacity: 0.85;
   font-size: 0.95rem;
-  color: #334155;
+  color: #b3e5ff;
 }
 
 .lesson-details {
@@ -104,7 +134,7 @@
   justify-content: space-between;
   align-items: center;
   font-size: 0.9rem;
-  color: #475569;
+  color: #a7d3ff;
 
   .lesson-day {
     font-weight: 500;
@@ -115,48 +145,87 @@
   }
 }
 
-/* ─────────────── Gombok ─────────────── */
-.edit-button {
-  background-color: #2563eb !important;
-  color: white !important;
-  font-weight: 600;
-  border-radius: 8px;
-  transition: 0.2s;
-  padding: 0.5rem 1rem;
-  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
-
-  &:hover {
-    background-color: #1d4ed8 !important;
-    box-shadow: 0 0 8px rgba(37, 99, 235, 0.4);
-  }
-}
-
 /* ─────────────── Üres / betöltés állapot ─────────────── */
 .loading-block,
 .no-lessons {
   text-align: center;
   padding: 1.5rem;
   font-size: 1rem;
-  color: #1e3a8a;
+  color: #82cfff;
+  text-shadow: 0 0 8px rgba(130, 207, 255, 0.5);
 }
 
 /* ─────────────── Láb (actions) ─────────────── */
 .dialog-actions {
   padding: 1rem 1.5rem 1.5rem 1.5rem;
-  background: #ffffff;
-  border-top: 1px solid #e2e8f0;
+  background: rgba(12, 18, 28, 0.95);
+  border-top: 1px solid rgba(33, 150, 243, 0.25);
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
+  z-index: 5;
 }
 
+/* ─────────────── Gombok ─────────────── */
 button {
+  position: relative;
   border-radius: 8px !important;
-  padding: 0.4rem 1.2rem !important;
-  font-weight: 500;
-}
+  padding: 0.45rem 1.3rem !important;
+  font-weight: 600;
+  color: #f5f9ff !important;
+  text-transform: none;
+  background: rgba(25, 118, 210, 0.25);
+  border: 1px solid rgba(100, 181, 246, 0.3);
+  transition: all 0.25s ease;
+  letter-spacing: 0.3px;
+  z-index: 10;
 
-button[color='accent'] {
-  color: #1e3a8a;
-  border-color: #cbd5e1 !important;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120%;
+    height: 140%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(
+      circle at center,
+      rgba(100, 181, 246, 0.3),
+      transparent 70%
+    );
+    filter: blur(20px);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  &:hover::before {
+    opacity: 1;
+  }
+
+  &:hover {
+    background: linear-gradient(135deg, #2196f3, #64b5f6);
+    border-color: rgba(144, 202, 249, 0.7);
+    box-shadow:
+      0 0 16px rgba(100, 181, 246, 0.55),
+      0 0 28px rgba(33, 150, 243, 0.35);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: scale(0.98);
+    box-shadow: 0 0 8px rgba(100, 181, 246, 0.6);
+  }
+
+  &[color='warn'] {
+    background: rgba(239, 83, 80, 0.2);
+    color: #ffb4b4 !important;
+    border: 1px solid rgba(239, 83, 80, 0.5);
+
+    &:hover {
+      background: rgba(244, 67, 54, 0.35);
+      box-shadow: 0 0 18px rgba(244, 67, 54, 0.6);
+    }
+  }
 }

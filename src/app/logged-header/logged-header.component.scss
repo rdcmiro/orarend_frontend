@@ -2,36 +2,87 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #c9c8c8; /* világosszürke háttér, mint a login header */
-  color: #0c4073; /* sötétkék szöveg */
+  background: rgba(10, 15, 25, 0.9);
+  color: #e3f2fd;
   font-weight: 500;
   padding: 0.75rem 1.5rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  box-shadow:
+    0 0 10px rgba(33, 150, 243, 0.25),
+    inset 0 -1px 0 rgba(33, 150, 243, 0.15);
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(100, 181, 246, 0.2);
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 
   &:hover {
-    background-color: #d4d3d3;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+    background: rgba(14, 20, 30, 0.95);
+    box-shadow:
+      0 0 16px rgba(33, 150, 243, 0.35),
+      inset 0 -1px 0 rgba(33, 150, 243, 0.25);
   }
 
+  /* ─────────────── App cím — dinamikus glow ─────────────── */
   .app-title {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #0c4073;
-    cursor: pointer;
-    transition: color 0.3s ease, text-shadow 0.3s ease;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #64b5f6;
+  cursor: pointer;
+  letter-spacing: 0.4px;
+  position: relative;
+  transition: all 0.4s ease;
+  text-shadow:
+    0 0 10px rgba(100, 181, 246, 0.6),
+    0 0 25px rgba(100, 181, 246, 0.4),
+    0 0 50px rgba(33, 150, 243, 0.25);
+  mix-blend-mode: screen; /* 🌈 a fény “kiterjed” a háttérre */
 
-    &:hover {
-      color: #1976d2; /* világosabb kék hover */
-      text-shadow: 0 0 10px rgba(25, 118, 210, 0.7); /* kék glow */
-    }
+  /* 🔹 Glow aura, ami túlnyúlik a saját dobozán */
+  &::before {
+    content: '';
+    position: absolute;
+    top: -80px;
+    left: -120px;
+    width: 300px;
+    height: 200px;
+    background: radial-gradient(
+      circle at center,
+      rgba(100, 181, 246, 0.25),
+      transparent 80%
+    );
+    filter: blur(40px);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
   }
 
+  &:hover::before {
+    opacity: 1;
+  }
+
+  &:hover {
+    color: #e3f2fd;
+    text-shadow:
+      0 0 15px rgba(144, 202, 249, 0.9),
+      0 0 35px rgba(100, 181, 246, 0.7),
+      0 0 70px rgba(33, 150, 243, 0.5);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    color: #bbdefb;
+    transform: scale(0.98);
+    text-shadow:
+      0 0 8px rgba(100, 181, 246, 0.6),
+      0 0 18px rgba(100, 181, 246, 0.4);
+  }
+}
+
+
+  /* ─────────────── Jobb oldal ─────────────── */
   .spacer {
     flex: 1 1 auto;
   }
@@ -41,29 +92,73 @@
     align-items: center;
     gap: 1rem;
     font-weight: 600;
-    color: #0c4073;
+    color: #bbdefb;
+    text-shadow: 0 0 6px rgba(100, 181, 246, 0.4);
   }
 
+  /* ─────────────── Lebegő neon gombok ─────────────── */
   button {
-    background-color: transparent;
-    color: #0c4073;
+    background: none;
+    color: #90caf9;
     font-weight: 500;
     text-transform: none;
-    border: 1px solid transparent;
-    border-radius: 8px;
+    border: none;
+    border-radius: 6px;
     padding: 0.4rem 1rem;
     transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        circle at center,
+        rgba(100, 181, 246, 0.15),
+        transparent 70%
+      );
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    &:hover::after {
+      opacity: 1;
+    }
 
     &:hover {
-      background-color: #1976d2;
-      color: white;
-      box-shadow: 0 0 10px rgba(25, 118, 210, 0.6);
+      color: #e3f2fd;
+      text-shadow:
+        0 0 6px rgba(144, 202, 249, 0.7),
+        0 0 12px rgba(144, 202, 249, 0.5);
+      transform: translateY(-1px);
     }
 
     &:active {
-      background-color: #0c4073;
-      color: white;
-      box-shadow: 0 0 6px rgba(25, 118, 210, 0.4);
+      color: #bbdefb;
+      text-shadow:
+        0 0 4px rgba(100, 181, 246, 0.6),
+        0 0 8px rgba(100, 181, 246, 0.4);
+      transform: scale(0.97);
+    }
+  }
+
+  /* ─────────────── Responsiveness ─────────────── */
+  @media (max-width: 800px) {
+    padding: 0.6rem 1rem;
+
+    .app-title {
+      font-size: 1.1rem;
+    }
+
+    .user-info {
+      gap: 0.6rem;
+      font-size: 0.9rem;
+    }
+
+    button {
+      padding: 0.3rem 0.8rem;
+      font-size: 0.85rem;
     }
   }
 }
