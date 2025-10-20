@@ -73,6 +73,24 @@
     rgba(8, 14, 25, 0.9)
   );
   color: #f5f9ff;
+
+    &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(100, 181, 246, 0.5); /* világító kék */
+    border-radius: 8px;
+    transition: background 0.25s ease;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 181, 246, 0.8);
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(15, 25, 35, 0.4);
+  }
 }
 
 /* ─────────────── Lista ─────────────── */
@@ -80,6 +98,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
+
+  
 }
 
 /* ─────────────── Kártyák ─────────────── */

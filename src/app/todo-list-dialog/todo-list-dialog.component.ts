@@ -48,14 +48,20 @@ export class TodoListDialogComponent implements OnInit {
     this.loadTodos();
   }
 
-  /** Teendők betöltése a backendről */
+  /** Teendők betöltése a backendről (rendezve lejárati idő szerint) */
   loadTodos(): void {
     this.todoService.getAllByUser().subscribe({
       next: (data) => {
         this.ngZone.run(() => {
-          this.todos = data;
+          this.todos = data
+            .sort((a, b) => {
+              if (!a.dueTime && !b.dueTime) return 0;
+              if (!a.dueTime) return 1;
+              if (!b.dueTime) return -1;
+              return new Date(a.dueTime).getTime() - new Date(b.dueTime).getTime();
+            });
           this.loading = false;
-          console.log('🟢 Teendők betöltve:', this.todos.length);
+          console.log('🟢 Teendők betöltve és rendezve:', this.todos.length);
         });
       },
       error: (err) => {
