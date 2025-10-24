@@ -62,23 +62,23 @@
     transition: max-height 0.3s ease;
 
     /* 🔹 Neon scrollbar design */
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
 
-    ::-webkit-scrollbar-thumb {
-      background: linear-gradient(180deg, #2196f3, #64b5f6);
-      border-radius: 4px;
-      box-shadow: 0 0 6px rgba(33, 150, 243, 0.5);
-    }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(100, 181, 246, 0.5); /* világító kék */
+    border-radius: 8px;
+    transition: background 0.25s ease;
+  }
 
-    ::-webkit-scrollbar-thumb:hover {
-      background: linear-gradient(180deg, #42a5f5, #90caf9);
-    }
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 181, 246, 0.8);
+  }
 
-    ::-webkit-scrollbar-track {
-      background: rgba(255, 255, 255, 0.05);
-    }
+  &::-webkit-scrollbar-track {
+    background: rgba(15, 25, 35, 0.4);
+  }
   }
 
   /* ─────────────── Időoszlop ─────────────── */

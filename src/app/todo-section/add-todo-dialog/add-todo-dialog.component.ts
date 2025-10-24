@@ -28,6 +28,9 @@ import {
   styleUrls: ['./add-todo-dialog.component.scss']
 })
 export class AddTodoDialogComponent {
+
+  isEditMode = false; // 
+
   title = '';
   description = '';
   dueDate: Date | null = null;

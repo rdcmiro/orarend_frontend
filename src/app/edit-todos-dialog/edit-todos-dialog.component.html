@@ -1,0 +1,44 @@
+<h2 mat-dialog-title class="dialog-title">🗒️ Teendők kezelése</h2>
+
+<div class="dialog-body" *ngIf="!loading; else loadingBlock">
+  <ng-container *ngIf="todos.length > 0; else noTodos">
+    <div class="todo-list">
+      <div *ngFor="let todo of todos" class="todo-card">
+        <div class="todo-info">
+          <div class="todo-header">
+            <strong class="todo-title">{{ todo.title }}</strong>
+            <span class="todo-date">
+              {{ todo.dueTime | date: 'yyyy.MM.dd. HH:mm' }}
+            </span>
+          </div>
+          <div class="todo-desc">{{ todo.description }}</div>
+        </div>
+
+        <button
+          mat-raised-button
+          color="primary"
+          class="edit-button"
+          (click)="onEdit(todo)"
+        >
+          ✏️ Módosítás
+        </button>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #loadingBlock>
+  <div class="loading-block">
+    <p>🔄 Betöltés...</p>
+  </div>
+</ng-template>
+
+<ng-template #noTodos>
+  <div class="no-lessons">
+    <p>📭 Nincs teendő felvéve.</p>
+  </div>
+</ng-template>
+
+<div mat-dialog-actions align="end" class="dialog-actions">
+  <button mat-stroked-button color="accent" mat-dialog-close>Bezárás</button>
+</div>

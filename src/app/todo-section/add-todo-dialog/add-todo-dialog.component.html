@@ -1,4 +1,6 @@
-<h2 mat-dialog-title class="dialog-title">📝 Új teendő hozzáadása</h2>
+<h2 mat-dialog-title class="dialog-title">
+  {{ isEditMode ? '✏️ Teendő szerkesztése' : '📝 Új teendő hozzáadása' }}
+</h2>
 
 <div class="dialog-body">
   <mat-form-field appearance="outline">

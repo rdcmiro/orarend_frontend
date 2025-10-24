@@ -1,0 +1,212 @@
+:host {
+  display: block;
+  padding: 0;
+  color: #f5f9ff;
+}
+
+/* ─────────────── Dialógus konténer ─────────────── */
+::ng-deep .mat-mdc-dialog-container {
+  border-radius: 16px !important;
+  padding: 0 !important;
+  overflow: hidden;
+  background: rgba(10, 15, 25, 0.96) !important;
+  box-shadow:
+    0 0 25px rgba(33, 150, 243, 0.35),
+    inset 0 0 8px rgba(33, 150, 243, 0.15);
+  border: 1px solid rgba(100, 181, 246, 0.25);
+  backdrop-filter: blur(14px);
+  animation: fadeInScale 0.25s ease-out;
+  color: #f5f9ff !important;
+}
+
+/* ─────────────── Animáció ─────────────── */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ─────────────── Cím ─────────────── */
+.dialog-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #82cfff;
+  text-align: center;
+  margin: 0 0 1.25rem 0;
+  padding-top: 1.8rem;
+  letter-spacing: 0.5px;
+  text-shadow:
+    0 0 10px rgba(130, 207, 255, 0.7),
+    0 0 25px rgba(100, 181, 246, 0.4);
+  animation: neonPulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes neonPulse {
+  0% {
+    text-shadow:
+      0 0 6px rgba(130, 207, 255, 0.5),
+      0 0 10px rgba(100, 181, 246, 0.3);
+  }
+  100% {
+    text-shadow:
+      0 0 15px rgba(130, 207, 255, 0.9),
+      0 0 25px rgba(100, 181, 246, 0.6);
+  }
+}
+
+/* ─────────────── Törzs ─────────────── */
+.dialog-body {
+  padding: 1.2rem 1.5rem 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 65vh;
+  overflow-y: auto;
+  background: linear-gradient(
+    145deg,
+    rgba(10, 20, 35, 0.92),
+    rgba(8, 14, 25, 0.9)
+  );
+  color: #f5f9ff;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(100, 181, 246, 0.5);
+    border-radius: 8px;
+    transition: background 0.25s ease;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 181, 246, 0.8);
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(15, 25, 35, 0.4);
+  }
+}
+
+/* ─────────────── Lista ─────────────── */
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+/* ─────────────── Teendő kártyák ─────────────── */
+.todo-card {
+  background: rgba(25, 40, 60, 0.85);
+  border-radius: 12px;
+  border: 1px solid rgba(130, 207, 255, 0.2);
+  box-shadow:
+    inset 0 0 8px rgba(33, 150, 243, 0.1),
+    0 3px 10px rgba(33, 150, 243, 0.25);
+  padding: 0.9rem 1.3rem;
+  transition: all 0.25s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &:hover {
+    transform: translateY(-2px);
+    background: rgba(25, 118, 210, 0.15);
+    box-shadow:
+      0 0 18px rgba(100, 181, 246, 0.3),
+      0 0 25px rgba(33, 150, 243, 0.25);
+  }
+}
+
+/* ─────────────── Információ blokk ─────────────── */
+.todo-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+  padding-right: 1rem;
+
+  .todo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .todo-title {
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: #90caf9;
+      text-shadow: 0 0 8px rgba(144, 202, 249, 0.6);
+    }
+
+    .todo-date {
+      font-size: 0.9rem;
+      color: #a7d3ff;
+      opacity: 0.9;
+    }
+  }
+
+  .todo-desc {
+    font-size: 0.9rem;
+    color: #cfd8dc;
+    line-height: 1.4;
+  }
+}
+
+/* ─────────────── Gombok ─────────────── */
+button {
+  border-radius: 8px !important;
+  padding: 0.4rem 1.2rem !important;
+  font-weight: 500;
+  color: #f5f9ff !important;
+  background: rgba(25, 118, 210, 0.25);
+  border: 1px solid rgba(100, 181, 246, 0.3);
+  transition: all 0.25s ease;
+  text-transform: none;
+
+  &:hover {
+    background: linear-gradient(135deg, #2196f3, #64b5f6);
+    border-color: rgba(144, 202, 249, 0.7);
+    box-shadow:
+      0 0 16px rgba(100, 181, 246, 0.55),
+      0 0 28px rgba(33, 150, 243, 0.35);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: scale(0.98);
+    box-shadow: 0 0 8px rgba(100, 181, 246, 0.6);
+  }
+
+  &[color='accent'] {
+    color: #90caf9 !important;
+  }
+
+  &.edit-button {
+    font-weight: 600;
+  }
+}
+
+/* ─────────────── Üres / betöltés állapot ─────────────── */
+.loading-block,
+.no-todos {
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 1rem;
+  color: #82cfff;
+  text-shadow: 0 0 8px rgba(130, 207, 255, 0.5);
+}
+
+/* ─────────────── Láb (actions) ─────────────── */
+.dialog-actions {
+  padding: 1rem 1.5rem 1.5rem 1.5rem;
+  background: rgba(12, 18, 28, 0.95);
+  border-top: 1px solid rgba(33, 150, 243, 0.25);
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}

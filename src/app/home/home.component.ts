@@ -100,4 +100,21 @@ export class HomeComponent implements OnInit {
       this.todoSection.loadTodos(); // a meglévő todo-section metódus
     });
   }
+
+    openEditTodosDialog(): void {
+    import('../edit-todos-dialog/edit-todos-dialog.component').then(
+      ({ EditTodosDialogComponent }) => {
+        const dialogRef = this.dialog.open(EditTodosDialogComponent, {
+          width: '700px',
+          panelClass: 'custom-dialog'
+        });
+
+        // 🔹 ha szerkesztés történt, frissítjük a listát
+        dialogRef.componentInstance.onTodoEdited.subscribe(() => {
+          console.log('🟢 Teendő szerkesztve – lista frissítése');
+          this.todoSection.loadTodos();
+        });
+      }
+    );
+  }
 }
