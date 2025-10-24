@@ -127,6 +127,7 @@
 .file-item {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   background: rgba(21, 32, 45, 0.85);
   border-radius: 10px;
   margin-bottom: 0.6rem;
@@ -147,6 +148,7 @@
   }
 
   .file-info {
+    flex: 1;
     display: flex;
     flex-direction: column;
 
@@ -163,6 +165,16 @@
   mat-checkbox {
     transform: scale(0.9);
     accent-color: #64b5f6;
+  }
+
+  button[mat-icon-button] {
+    color: #64b5f6;
+    transition: all 0.2s ease;
+    &:hover {
+      color: #90caf9;
+      transform: scale(1.1);
+      filter: drop-shadow(0 0 6px rgba(100, 181, 246, 0.5));
+    }
   }
 }
 

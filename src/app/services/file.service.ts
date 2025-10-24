@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../envinments/environment';
+
 
 @Injectable({ providedIn: 'root' })
 export class FileService {
@@ -23,4 +25,12 @@ export class FileService {
   getSummary(id: number): Observable<string> {
     return this.http.get(`${this.baseUrl}/${id}/summary`, { responseType: 'text' });
   }
+
+downloadFile(id: number) {
+  return this.http.get(`${this.baseUrl}/${id}/download`, { 
+    responseType: 'blob',
+    observe: 'response'
+  });
+}
+
 }

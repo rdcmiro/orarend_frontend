@@ -18,6 +18,8 @@ import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { FileService } from '../services/file.service';
 import { LoggedHeaderComponent } from '../logged-header/logged-header.component';
 
@@ -31,6 +33,8 @@ import { LoggedHeaderComponent } from '../logged-header/logged-header.component'
     MatCheckboxModule,
     MatButtonModule,
     MatProgressBarModule,
+    MatIconModule,
+    MatTooltipModule,
     LoggedHeaderComponent
   ],
   templateUrl: './file-manager.component.html',
@@ -133,6 +137,22 @@ export class FileManagerComponent implements OnInit {
         this.loading = false;
         this.hasLoaded = true;
       }
+    });
+  }
+
+  /** Letöltés gomb — fájl letöltése */
+  onDownload(id: number) {
+    this.fileService.downloadFile(id).subscribe(res => {
+      const blob = res.body!;
+      const contentDisposition = res.headers.get('Content-Disposition');
+      const match = /filename\*?=(?:UTF-8'')?"?([^"]+)"?/.exec(contentDisposition || '');
+      const filename = match ? decodeURIComponent(match[1]) : 'file';
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.click();
+      window.URL.revokeObjectURL(url);
     });
   }
 }

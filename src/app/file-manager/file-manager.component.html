@@ -35,6 +35,17 @@
           <strong>{{ file.filename }}</strong>
           <span class="meta">{{ file.uploadedAt | date: 'yyyy.MM.dd. HH:mm' }}</span>
         </div>
+
+        <!-- 💾 Letöltés gomb -->
+        <button
+          mat-icon-button
+          color="primary"
+          (click)="onDownload(file.id)"
+          [disabled]="loading"
+          matTooltip="Letöltés"
+        >
+          <mat-icon>download</mat-icon>
+        </button>
       </div>
     </div>
 
