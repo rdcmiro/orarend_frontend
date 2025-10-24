@@ -4,12 +4,13 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { TokenInterceptor } from './interceptors/token.interceptor';
-import { ErrorInterceptor } from './interceptors/tokenerror.interceptor';
+import { tokenErrorInterceptor } from './interceptors/tokenerror.interceptor';
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideAnimationsAsync(),
-    provideHttpClient(withInterceptors([TokenInterceptor, ErrorInterceptor]))
+    provideHttpClient(withInterceptors([TokenInterceptor, tokenErrorInterceptor]))
   ]
 };

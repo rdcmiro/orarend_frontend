@@ -6,14 +6,17 @@ import { RegisterComponent } from './register/register.component';
 import { FileManagerComponent } from './file-manager/file-manager.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', component: LandingPageComponent },
-  { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  {path: 'file', component: FileManagerComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
+
+  { path: 'home', component: HomeComponent, canActivate: [authGuard] },
+  { path: 'file', component: FileManagerComponent, canActivate: [authGuard] },
+
   { path: '**', redirectTo: '' }
 ];
