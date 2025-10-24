@@ -1,16 +1,22 @@
 <app-login-header></app-login-header>
 
+<div class="login-background">
+  <div class="glow-circle circle1"></div>
+  <div class="glow-circle circle2"></div>
+</div>
+
 <div class="login-container">
-  <div class="left-panel">
-    <h1>Üdv újra az Okos Órarendben!</h1>
-    <p>Kezeld az órarended, nézd meg a heti beosztásod és kapj automatikus értesítéseket — mindezt egy helyen.</p>
+  <div class="left-panel animate-fadein">
+    <h1>Üdv újra az <span>Okos Órarendben</span>!</h1>
+    <p>
+      Intelligens módon kezeld az óráid és teendőid, és tartsd kézben az egész heted — mindezt
+      egy elegáns felületen.
+    </p>
   </div>
 
-  <div class="right-panel">
+  <div class="right-panel animate-slidein">
     <mat-card>
-      <mat-card-header>
-        <mat-card-title>Bejelentkezés</mat-card-title>
-      </mat-card-header>
+      <mat-card-title>Bejelentkezés</mat-card-title>
 
       <mat-card-content>
         <form (ngSubmit)="onLogin()" #loginForm="ngForm">
@@ -29,7 +35,7 @@
             color="primary"
             type="submit"
             [disabled]="!loginForm.form.valid"
-            class="full-width"
+            class="full-width glow-button"
           >
             Belépés
           </button>

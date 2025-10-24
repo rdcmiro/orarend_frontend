@@ -20,7 +20,6 @@ import { LoginHeaderComponent } from '../login-header/login-header.component';
 })
 export class LandingPageComponent {
   constructor() {
-  console.log('✅ LandingPageComponent loaded!');
 }
 
 }

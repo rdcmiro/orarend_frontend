@@ -1,16 +1,26 @@
 <app-login-header></app-login-header>
 
+<!-- 🔹 Háttér – animált fénygömbök -->
+<div class="register-background">
+  <div class="glow-circle circle1"></div>
+  <div class="glow-circle circle2"></div>
+</div>
+
+<!-- 🔹 Kétpaneles konténer -->
 <div class="register-container">
-  <div class="left-panel">
-    <h1>Csatlakozz az Okos Órarendhez!</h1>
-    <p>Könnyed órarend-kezelés, automatikus értesítések és modern felület.</p>
+  <!-- ─────────── Bal oldali panel ─────────── -->
+  <div class="left-panel animate-fadein">
+    <h1>Csatlakozz az <span>Okos&nbsp;Órarendhez</span>!</h1>
+    <p>
+      Könnyed órarend-kezelés, automatikus értesítések és modern felület —  
+      mindez egyetlen intelligens alkalmazásban.
+    </p>
   </div>
 
-  <div class="right-panel">
+  <!-- ─────────── Jobb oldali panel ─────────── -->
+  <div class="right-panel animate-slidein">
     <mat-card>
-      <mat-card-header>
-        <mat-card-title>Regisztráció</mat-card-title>
-      </mat-card-header>
+      <mat-card-title>Regisztráció</mat-card-title>
 
       <mat-card-content>
         <form (ngSubmit)="onRegister()" #registerForm="ngForm">
@@ -34,7 +44,7 @@
             color="primary"
             type="submit"
             [disabled]="!registerForm.form.valid"
-            class="full-width"
+            class="full-width glow-button"
           >
             Regisztráció
           </button>

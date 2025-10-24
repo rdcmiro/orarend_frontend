@@ -1,49 +1,125 @@
+:host {
+  display: block;
+  height: 100vh;
+  overflow: hidden;
+  color: #f5f9ff;
+  background: radial-gradient(circle at top left, #0a192f, #000000 80%);
+  background-attachment: fixed;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ─────────────── Tartalom középre igazítása ─────────────── */
 .landing-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: calc(100vh - 60px);
   margin-top: 60px;
-  background-color: #2c2c2c;
+  backdrop-filter: blur(12px);
 }
 
+/* ─────────────── Üvegkártya ─────────────── */
 .landing-card {
-  width: 400px;
-  padding: 30px;
-  border-radius: 12px;
-  background: #fff;
-  box-shadow: 0 4px 20px rgba(25, 118, 210, 0.5);
+  width: 420px;
+  padding: 2rem 2.2rem;
+  border-radius: 18px;
+  background: rgba(10, 15, 25, 0.9);
+  box-shadow:
+    0 0 35px rgba(33, 150, 243, 0.4),
+    inset 0 0 12px rgba(33, 150, 243, 0.15);
+  border: 1px solid rgba(100, 181, 246, 0.3);
   text-align: center;
-  transition: box-shadow 0.3s ease;
+  transition: all 0.35s ease;
+  color: #f5f9ff;
 
   &:hover {
-    box-shadow: 0 6px 25px rgba(25, 118, 210, 0.7);
+    transform: translateY(-4px);
+    box-shadow:
+      0 0 45px rgba(33, 150, 243, 0.6),
+      inset 0 0 16px rgba(33, 150, 243, 0.2);
   }
 
   mat-card-title {
     font-size: 1.8rem;
-    font-weight: 600;
-    color: #1976d2;
+    font-weight: 700;
+    color: #82cfff;
+    letter-spacing: 0.5px;
+    margin-bottom: 1rem;
+    text-shadow:
+      0 0 10px rgba(130, 207, 255, 0.7),
+      0 0 25px rgba(100, 181, 246, 0.4);
+    animation: neonPulse 3s ease-in-out infinite alternate;
   }
 
-  .button-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 1.5rem;
+  mat-card-content {
+    padding: 0;
+  }
+}
+
+/* ─────────────── Gombok és elválasztó ─────────────── */
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+  margin-top: 1.5rem;
+}
+
+.divider {
+  color: #90caf9;
+  font-weight: 500;
+  margin: 0.3rem 0;
+  opacity: 0.8;
+  text-shadow: 0 0 6px rgba(144, 202, 249, 0.6);
+}
+
+/* ─────────────── Gombstílusok — egységes neon-dark ─────────────── */
+button {
+  width: 100%;
+  height: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 10px !important;
+  color: #f5f9ff !important;
+  border: 1px solid rgba(100, 181, 246, 0.35);
+  background: rgba(25, 118, 210, 0.25);
+  transition: all 0.25s ease;
+  text-transform: none;
+  letter-spacing: 0.3px;
+
+  &:hover {
+    background: linear-gradient(135deg, #2196f3, #64b5f6);
+    border-color: rgba(144, 202, 249, 0.7);
+    box-shadow:
+      0 0 16px rgba(100, 181, 246, 0.55),
+      0 0 28px rgba(33, 150, 243, 0.35);
+    transform: translateY(-1px);
   }
 
-  .divider {
-    color: #555;
-    font-weight: 500;
-    margin: 0.5rem 0;
+  &:active {
+    transform: scale(0.98);
+    box-shadow: 0 0 8px rgba(100, 181, 246, 0.6);
   }
 
-  button {
-    width: 100%;
-    height: 50px;
-    font-size: 1.1rem;
-    font-weight: bold;
+  &[color='primary'] {
+    background: linear-gradient(135deg, #1e88e5, #0d47a1);
+  }
+
+  &[mat-stroked-button] {
+    background: rgba(10, 20, 35, 0.7);
+  }
+}
+
+/* ─────────────── Pulzáló cím animáció ─────────────── */
+@keyframes neonPulse {
+  0% {
+    text-shadow:
+      0 0 6px rgba(130, 207, 255, 0.5),
+      0 0 10px rgba(100, 181, 246, 0.3);
+  }
+  100% {
+    text-shadow:
+      0 0 15px rgba(130, 207, 255, 0.9),
+      0 0 25px rgba(100, 181, 246, 0.6);
   }
 }
