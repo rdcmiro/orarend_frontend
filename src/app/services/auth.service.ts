@@ -63,6 +63,14 @@ export class AuthService {
   register(body: RegisterRequest): Observable<AuthenticationResponse> {
     return this.http.post<AuthenticationResponse>(`${this.baseUrl}/register`, body);
   }
+
+  forgotPassword(email: string): Observable<string> {
+    return this.http.post(`${this.baseUrl}/forgotPassword`, { email }, { responseType: 'text' });
+  }
+
+  resetPassword(email: string, token: string, newPassword: string): Observable<string> {
+    return this.http.post(`${this.baseUrl}/resetPassword`, { email, token, newPassword }, { responseType: 'text' });
+  }
   
   logout() {
     this.clearToken();

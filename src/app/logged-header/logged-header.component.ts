@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-logged-header',
@@ -12,10 +13,10 @@ import { Router, RouterLink } from '@angular/router';
   styleUrls: ['./logged-header.component.scss']
 })
 export class LoggedHeaderComponent {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   logout() {
-    // később ide jön az AuthService.logout()
+    this.authService.logout();
     this.router.navigate(['/login']);
   }
 }

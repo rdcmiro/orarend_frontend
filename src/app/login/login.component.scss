@@ -417,3 +417,43 @@ mat-card-content {
     inset 0 0 8px rgba(33, 150, 243, 0.2);
 }
 
+/* ─────────────── Elfelejtett jelszó link ─────────────── */
+.forgot-password-link {
+  margin-top: 0.6rem;
+  text-align: center;
+
+  a {
+    position: relative;
+    display: inline-block;
+    color: #ef5350; /* piros */
+    font-weight: 600;
+    text-decoration: none;
+    letter-spacing: 0.3px;
+    transition: color 0.25s ease, text-shadow 0.25s ease, transform 0.25s ease;
+
+    &:hover {
+      color: #ff8a80;
+      text-shadow:
+        0 0 6px rgba(255, 138, 128, 0.6),
+        0 0 14px rgba(239, 83, 80, 0.4);
+      animation: forgotPulse 1.3s ease-in-out infinite alternate;
+      transform: scale(1.03);
+    }
+  }
+}
+
+@keyframes forgotPulse {
+  0% {
+    text-shadow:
+      0 0 6px rgba(255, 138, 128, 0.3),
+      0 0 10px rgba(239, 83, 80, 0.2);
+  }
+  100% {
+    text-shadow:
+      0 0 12px rgba(255, 138, 128, 0.7),
+      0 0 24px rgba(239, 83, 80, 0.5);
+  }
+}
+
+
+
