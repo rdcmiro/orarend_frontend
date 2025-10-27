@@ -1,0 +1,63 @@
+:host {
+  display: block;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ─────────────── Dialógus konténer ─────────────── */
+::ng-deep .custom-dialog {
+  background: rgba(10, 15, 25, 0.88);
+  border-radius: 18px;
+  border: 1px solid rgba(100, 181, 246, 0.25);
+  backdrop-filter: blur(22px);
+  box-shadow:
+    0 0 35px rgba(33, 150, 243, 0.55),
+    inset 0 0 10px rgba(33, 150, 243, 0.2);
+  color: #ffffff;
+
+  /* ❌ animáció kikapcsolva */
+  opacity: 1 !important;
+  transform: scale(1) !important;
+  animation: none !important;
+  animation-delay: 0s !important;
+}
+
+/* ─────────────── Cím ─────────────── */
+h2[mat-dialog-title] {
+  margin: 0 0 8px 0;
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 0 0 12px rgba(33, 150, 243, 0.6);
+}
+
+/* ─────────────── Tartalom ─────────────── */
+mat-dialog-content {
+  font-size: 1rem;
+  color: #f1f5ff;
+  opacity: 0.95;
+  margin-bottom: 12px;
+
+  * {
+    color: #ffffff !important;
+  }
+}
+
+/* ─────────────── Gombok ─────────────── */
+mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+
+  button[mat-button],
+  button[mat-stroked-button],
+  button[mat-raised-button] {
+    color: #ffffff;
+    opacity: 0.9;
+  }
+
+  button[color='warn'] {
+    font-weight: 600;
+    box-shadow: 0 0 12px rgba(255, 82, 82, 0.4);
+    color: #fff5f5;
+  }
+}

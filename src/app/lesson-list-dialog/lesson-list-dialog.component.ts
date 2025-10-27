@@ -1,22 +1,18 @@
 import { Component, OnInit, NgZone, EventEmitter, Output } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { LessonService, Lesson } from '../services/lesson.service';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
-import { Subject } from 'rxjs';
 import { UtilityService } from '../services/utility.service';
-import {
-  trigger,
-  transition,
-  style,
-  animate
-} from '@angular/animations';
+import { MatDialogModule } from '@angular/material/dialog';
+import { trigger, transition, style, animate } from '@angular/animations';
+import { ConfirmDialogComponent } from '../shared/confirm/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-lesson-list-dialog',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatListModule],
+  imports: [CommonModule, MatButtonModule, MatListModule, MatDialogModule],
   templateUrl: './lesson-list-dialog.component.html',
   styleUrls: ['./lesson-list-dialog.component.scss'],
   animations: [
@@ -37,12 +33,13 @@ export class LessonListDialogComponent implements OnInit {
   lessons: Lesson[] = [];
   loading = true;
 
-  // 🔹 Ezt figyeli majd a HomeComponent
-@Output() onLessonDeleted = new EventEmitter<void>();
+  /** 🔹 Ezt figyeli majd a HomeComponent */
+  @Output() onLessonDeleted = new EventEmitter<void>();
 
   constructor(
     private lessonService: LessonService,
     private dialogRef: MatDialogRef<LessonListDialogComponent>,
+    private dialog: MatDialog, // ✅ hiányzott
     private ngZone: NgZone,
     private utils: UtilityService
   ) {}
@@ -56,7 +53,7 @@ export class LessonListDialogComponent implements OnInit {
     this.lessonService.getAllByUser().subscribe({
       next: (data) => {
         this.ngZone.run(() => {
-          this.lessons = data.map(lesson => ({
+          this.lessons = data.map((lesson) => ({
             ...lesson,
             startTime: this.formatTime(lesson.startTime),
             endTime: this.formatTime(lesson.endTime)
@@ -76,21 +73,34 @@ export class LessonListDialogComponent implements OnInit {
     return time.slice(0, 5);
   }
 
+  /** 🔹 Törlés megerősítő dialógussal */
   deleteLesson(id: number): void {
-    if (!confirm('Biztosan törlöd ezt az órát?')) return;
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      panelClass: 'custom-dialog', // ✅ megtartva a dizájn, animáció nélkül
+      data: {
+        title: 'Óra törlése',
+        message: 'Biztosan törlöd ezt az órát?'
+      }
+    });
 
-    this.lessonService.deleteLesson(id).subscribe({
-      next: () => {
-        this.ngZone.run(() => {
-          this.lessons = this.lessons.filter(l => l.id !== id);
-          console.log('🟢 Óra törölve, lista frissítve, emitting');
-          this.onLessonDeleted.emit(); // 🔹 értesíti a HomeComponentet
-        });
-      },
-      error: (err) => alert('❌ Hiba történt: ' + err.message)
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (!confirmed) return; 
+
+      this.lessonService.deleteLesson(id).subscribe({
+        next: () => {
+          this.ngZone.run(() => {
+            this.lessons = this.lessons.filter((l) => l.id !== id);
+            console.log('🟢 Óra törölve, lista frissítve, emitting');
+            this.onLessonDeleted.emit();
+          });
+        },
+        error: (err) => alert('❌ Hiba történt: ' + err.message)
+      });
     });
   }
 
+  /** 🔹 Dialógus bezárása */
   close(): void {
     this.dialogRef.close();
   }

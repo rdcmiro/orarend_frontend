@@ -5,14 +5,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { trigger, transition, style, animate } from '@angular/animations';
-
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../shared/confirm/confirm-dialog/confirm-dialog.component';
 import { TodoService, Todo } from '../services/todo.service';
 import { UtilityService } from '../services/utility.service'; // opcionális, ha kell másra
 
 @Component({
   selector: 'app-todo-list-dialog',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatListModule, MatCheckboxModule],
+  imports: [CommonModule, MatButtonModule, MatListModule, MatCheckboxModule, MatDialogModule],
   templateUrl: './todo-list-dialog.component.html',
   styleUrls: ['./todo-list-dialog.component.scss'],
   animations: [
@@ -33,15 +34,15 @@ export class TodoListDialogComponent implements OnInit {
   todos: Todo[] = [];
   loading = true;
 
-  /** Ezt figyelheti a szülő (pl. HomeComponent), ha változás történt */
   @Output() onTodoChanged = new EventEmitter<void>();
 
-  constructor(
-    private todoService: TodoService,
-    private dialogRef: MatDialogRef<TodoListDialogComponent>,
-    private ngZone: NgZone,
-    private utils: UtilityService
-  ) {}
+constructor(
+  private todoService: TodoService,
+  private dialogRef: MatDialogRef<TodoListDialogComponent>,
+  private ngZone: NgZone,
+  private utils: UtilityService,
+  private dialog: MatDialog // 👈 EZ HIÁNYZOTT
+) {}
 
   ngOnInit(): void {
     console.log('🟡 TodoListDialogComponent inicializálva');
@@ -98,7 +99,17 @@ export class TodoListDialogComponent implements OnInit {
 
   /** Teendő törlése */
   deleteTodo(id: number): void {
-    if (!confirm('Biztosan törlöd ezt a teendőt?')) return;
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    width: '400px',
+    panelClass: 'custom-dialog',
+    data: {
+      title: 'Teendő törlése',
+      message: 'Biztosan törölni szeretnéd ezt a teendőt?'
+    }
+  });
+
+  dialogRef.afterClosed().subscribe((confirmed) => {
+    if (!confirmed) return;
 
     this.todoService.deleteTodo(id).subscribe({
       next: () => {
@@ -113,6 +124,7 @@ export class TodoListDialogComponent implements OnInit {
         alert('❌ Hiba történt: ' + (err?.message ?? 'ismeretlen hiba'));
       }
     });
+  });
   }
 
   /** Hátralévő idő kiszámítása */
