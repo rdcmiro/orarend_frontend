@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../envinments/environment';
 
 
 @Injectable({ providedIn: 'root' })
@@ -31,6 +30,12 @@ downloadFile(id: number) {
     responseType: 'blob',
     observe: 'response'
   });
+}
+
+deleteFile(id: number): Observable<string> {
+  return this.http.delete(`${this.baseUrl}/${id}`, {
+    responseType: 'text'
+  }) as unknown as Observable<string>;
 }
 
 }

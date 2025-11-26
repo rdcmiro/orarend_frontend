@@ -20,8 +20,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+
 import { FileService } from '../services/file.service';
 import { LoggedHeaderComponent } from '../logged-header/logged-header.component';
+import { FileSummaryDialogComponent } from '../file-summary-dialog/file-summary-dialog.component';
 
 @Component({
   selector: 'app-file-manager',
@@ -35,6 +38,7 @@ import { LoggedHeaderComponent } from '../logged-header/logged-header.component'
     MatProgressBarModule,
     MatIconModule,
     MatTooltipModule,
+    MatDialogModule,
     LoggedHeaderComponent
   ],
   templateUrl: './file-manager.component.html',
@@ -61,16 +65,16 @@ import { LoggedHeaderComponent } from '../logged-header/logged-header.component'
 })
 export class FileManagerComponent implements OnInit {
   selectedFile: File | null = null;
-  uploadedFileId?: number;
-  summaryText = '';
   loading = false;
   files: any[] = [];
   hasLoaded = false;
+  deletingId: number | null = null;
 
   constructor(
     private fileService: FileService,
     private ngZone: NgZone,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -90,31 +94,13 @@ export class FileManagerComponent implements OnInit {
     if (!this.selectedFile) return;
     this.loading = true;
     this.fileService.uploadFile(this.selectedFile).subscribe({
-      next: (res: any) => {
-        this.uploadedFileId = res.id;
+      next: () => {
         this.selectedFile = null;
         this.loading = false;
-        this.loadFiles(); // frissítjük a listát
+        this.loadFiles();
       },
       error: (err: any) => {
         console.error('Feltöltés hiba:', err);
-        this.loading = false;
-      }
-    });
-  }
-
-  /** AI összefoglalás (egyetlen fájlra) */
-  onSummarize(): void {
-    if (!this.uploadedFileId) return;
-    this.loading = true;
-    this.fileService.getSummary(this.uploadedFileId).subscribe({
-      next: (res: string) => {
-        this.summaryText = res;
-        this.loading = false;
-        this.cdr.detectChanges();
-      },
-      error: (err: any) => {
-        console.error('AI összefoglalás hiba:', err);
         this.loading = false;
       }
     });
@@ -140,12 +126,14 @@ export class FileManagerComponent implements OnInit {
     });
   }
 
-  /** Letöltés gomb — fájl letöltése */
+  /** Letöltés */
   onDownload(id: number) {
     this.fileService.downloadFile(id).subscribe(res => {
       const blob = res.body!;
       const contentDisposition = res.headers.get('Content-Disposition');
-      const match = /filename\*?=(?:UTF-8'')?"?([^"]+)"?/.exec(contentDisposition || '');
+      const match = /filename\*?=(?:UTF-8'')?"?([^"]+)"?/.exec(
+        contentDisposition || ''
+      );
       const filename = match ? decodeURIComponent(match[1]) : 'file';
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -153,6 +141,37 @@ export class FileManagerComponent implements OnInit {
       a.download = filename;
       a.click();
       window.URL.revokeObjectURL(url);
+    });
+  }
+
+  /** ❌ Törlés */
+  onDelete(id: number) {
+    if (!confirm('Biztosan törlöd ezt a fájlt?')) return;
+
+    this.deletingId = id;
+
+    this.fileService.deleteFile(id).subscribe({
+      next: () => {
+        this.deletingId = null;
+        this.ngZone.run(() => {
+          this.loadFiles();
+        });
+      },
+      error: err => {
+        console.error('Törlés hiba:', err);
+        this.deletingId = null;
+      }
+    });
+  }
+
+  /** 🧠 AI összefoglaló dialógus megnyitása az adott fájlra */
+  openSummaryDialog(file: any): void {
+    this.dialog.open(FileSummaryDialogComponent, {
+      width: '700px',
+      data: {
+        id: file.id,
+        filename: file.filename
+      }
     });
   }
 }

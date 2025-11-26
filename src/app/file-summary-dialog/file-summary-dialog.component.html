@@ -1,0 +1,52 @@
+<div class="dialog-wrapper">
+  <div class="dialog-header">
+    <span class="title">🧠 Jegyzet összefoglaló</span>
+
+    <button
+      mat-icon-button
+      (click)="onClose()"
+      class="close-btn"
+      matTooltip="Bezárás"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="dialog-subtitle">
+    Az alábbi összefoglalót egy kattintással elküldheted magadnak emailben.
+  </div>
+
+  <div class="dialog-content">
+    <!-- Összefoglalás betöltése közben -->
+    <div *ngIf="loadingSummary" class="loading-wrapper">
+      <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+      <p>Összefoglalás készítése...</p>
+    </div>
+
+    <!-- Betöltött összefoglaló -->
+    <pre *ngIf="!loadingSummary">{{ summary }}</pre>
+  </div>
+
+  <div class="dialog-footer">
+    <button
+      mat-raised-button
+      color="primary"
+      class="send-btn"
+      (click)="onSend()"
+      [disabled]="sending || loadingSummary || !summary"
+    >
+      <ng-container *ngIf="!sending">📧 Elküldöm magamnak emailben</ng-container>
+      <ng-container *ngIf="sending">
+        <mat-progress-spinner diameter="20" mode="indeterminate"></mat-progress-spinner>
+      </ng-container>
+    </button>
+  </div>
+
+  <div *ngIf="sendSuccess" class="status-msg success-msg">
+    ✔ Email sikeresen elküldve!
+  </div>
+
+  <div *ngIf="sendError" class="status-msg error-msg">
+    ⚠ {{ sendError }}
+  </div>
+</div>

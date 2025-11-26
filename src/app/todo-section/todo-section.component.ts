@@ -105,28 +105,6 @@ export class TodoSectionComponent implements OnInit, OnDestroy {
     return `${minutes} perc`;
   }
 
-  addTodo(): void {
-    const title = prompt('Add meg a teendő címét:');
-    if (!title) return;
-
-    const description = prompt('Rövid leírás:') || '';
-    const dueHours = prompt('Hány óra múlva legyen a határidő?');
-    const dueTime = new Date();
-    if (dueHours) dueTime.setHours(dueTime.getHours() + parseInt(dueHours, 10));
-
-    const newTodo: Partial<Todo> = {
-      title,
-      description,
-      dueTime: dueTime.toISOString(),
-      isItDone: false
-    };
-
-    this.todoService.createTodo(newTodo).subscribe({
-      next: () => this.loadTodos(),
-      error: (err) => console.error('🔴 Hiba létrehozáskor:', err)
-    });
-  }
-
   toggleTodo(todo: Todo): void {
     this.todoService.patchTodo(todo.id!, { isItDone: todo.isItDone }).subscribe({
       next: () => console.log('✅ Teendő frissítve:', todo.title),

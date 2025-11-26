@@ -4,7 +4,7 @@
   <div class="file-page">
     <h2 class="page-title">📄 Fájlok és AI összefoglalás</h2>
 
-    <!-- 📤 Feltöltés blokk -->
+    <!-- 📤 Feltöltés -->
     <div class="upload-card">
       <h3>📤 Fájl feltöltése</h3>
       <div class="upload-row">
@@ -20,7 +20,7 @@
       </div>
     </div>
 
-    <!-- 📋 Fájl lista -->
+    <!-- 📋 Lista -->
     <div class="files-card" *ngIf="hasLoaded && files.length > 0; else noFiles">
       <h3>📂 Fájljaid</h3>
 
@@ -31,12 +31,25 @@
         [class.selected]="file.selected"
       >
         <mat-checkbox [(ngModel)]="file.selected"></mat-checkbox>
+
         <div class="file-info">
           <strong>{{ file.filename }}</strong>
-          <span class="meta">{{ file.uploadedAt | date: 'yyyy.MM.dd. HH:mm' }}</span>
+          <span class="meta">
+            {{ file.uploadedAt | date: 'yyyy.MM.dd. HH:mm' }}
+          </span>
         </div>
 
-        <!-- 💾 Letöltés gomb -->
+        <!-- 🧠 AI összefoglalás dialógus -->
+        <button
+          mat-icon-button
+          (click)="openSummaryDialog(file)"
+          [disabled]="loading"
+          matTooltip="AI összefoglalás"
+        >
+          <mat-icon>summarize</mat-icon>
+        </button>
+
+        <!-- 💾 Letöltés -->
         <button
           mat-icon-button
           color="primary"
@@ -46,6 +59,18 @@
         >
           <mat-icon>download</mat-icon>
         </button>
+
+        <!-- ❌ Törlés -->
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="onDelete(file.id)"
+          [disabled]="deletingId === file.id"
+          matTooltip="Törlés"
+        >
+          <mat-icon *ngIf="deletingId !== file.id">delete</mat-icon>
+          <mat-icon *ngIf="deletingId === file.id">hourglass_empty</mat-icon>
+        </button>
       </div>
     </div>
 
@@ -53,21 +78,6 @@
       <p class="empty">Még nincsenek feltöltött fájljaid.</p>
     </ng-template>
 
-    <!-- 🧠 Összefoglalás -->
-    <div class="actions" *ngIf="uploadedFileId">
-      <button
-        mat-raised-button
-        color="accent"
-        class="summarize-button"
-        (click)="onSummarize()"
-        [disabled]="loading"
-      >
-        🧠 Összefoglalás
-      </button>
-    </div>
-
     <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
-
-    <pre class="result" *ngIf="summaryText">{{ summaryText }}</pre>
   </div>
 </div>
