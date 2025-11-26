@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -10,14 +10,14 @@ export class EmailService {
 
   constructor(private http: HttpClient) {}
 
-sendEmail(subject: string, body: string): Observable<string> {
-  const params = new HttpParams()
-    .set('body', body)
-    .set('subject', subject);
+  sendEmail(subject: string, body: string): Observable<string> {
+    const payload = {
+      subject: subject,
+      body: body
+    };
 
-  return this.http.post(`${this.baseUrl}/sendToUser`, null, {
-    params,
-    responseType: 'text'
-  });
-}
+    return this.http.post(`${this.baseUrl}/sendToUser`, payload, {
+      responseType: 'text'
+    });
+  }
 }

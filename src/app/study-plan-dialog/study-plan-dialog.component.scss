@@ -1,0 +1,224 @@
+:host {
+  display: block;
+  padding: 0;
+  color: #f5f9ff;
+}
+
+/* ─────────────────────────────────────────────── */
+/*    TELJES FEHÉR HÁTTÉR FIX AZ OVERLAY RÉTEGEKEN */
+/* ─────────────────────────────────────────────── */
+
+::ng-deep .cdk-overlay-backdrop {
+  background: rgba(0, 0, 0, 0.55) !important;
+  backdrop-filter: blur(6px);
+}
+
+::ng-deep .cdk-overlay-pane {
+  background: transparent !important;
+  border-radius: 32px !important;
+  overflow: hidden !important;
+}
+
+::ng-deep .mat-mdc-dialog-surface {
+  background: transparent !important;
+  border-radius: 32px !important;
+  overflow: hidden !important;
+  box-shadow: none !important;
+}
+
+::ng-deep .mdc-dialog__surface {
+  background: transparent !important;
+  border-radius: 32px !important;
+  overflow: hidden !important;
+  box-shadow: none !important;
+}
+
+/* ─────────────── Material dialógus konténer ─────────────── */
+
+::ng-deep .mat-mdc-dialog-container {
+  border-radius: 32px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  background: rgba(10, 15, 25, 0.97) !important;
+  box-shadow:
+    0 0 25px rgba(33, 150, 243, 0.35),
+    inset 0 0 8px rgba(33, 150, 243, 0.15);
+  border: 1px solid rgba(100, 181, 246, 0.25);
+  backdrop-filter: blur(14px);
+  animation: fadeInScale 0.25s ease-out;
+  color: #f5f9ff !important;
+}
+
+/* ─────────────── Animáció ─────────────── */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ─────────────────────────────────────────────── */
+/*      A DIALÓGUS BELSŐ LAYOUTJA                 */
+/* ─────────────────────────────────────────────── */
+
+.dialog-wrapper {
+  min-width: 520px;
+  max-width: 720px;
+  max-height: 80vh;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 1.4rem 1.6rem 1.2rem;
+
+  background: transparent;
+  border-radius: 0;
+
+  color: #e3f2fd;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ─────────────── Header ─────────────── */
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid rgba(100, 181, 246, 0.35);
+
+  .title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #64b5f6;
+    text-shadow: 0 0 8px rgba(100, 181, 246, 0.7);
+  }
+
+  .close-btn {
+    color: #ff8a80;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: #ff5252;
+      transform: scale(1.08);
+      filter: drop-shadow(0 0 6px rgba(255, 82, 82, 0.7));
+    }
+  }
+}
+
+/* ─────────────── Subtitle ─────────────── */
+.dialog-subtitle {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: #b0bec5;
+}
+
+/* ─────────────── Content ─────────────── */
+.dialog-content {
+  margin-top: 0.9rem;
+  margin-bottom: 0.6rem;
+  flex: 1;
+  max-height: 50vh;
+  overflow-y: auto;
+
+  background: radial-gradient(
+    circle at top left,
+    rgba(25, 42, 64, 0.9),
+    rgba(13, 22, 35, 0.95)
+  );
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(100, 181, 246, 0.25);
+  box-shadow:
+    inset 0 0 12px rgba(13, 71, 161, 0.45),
+    0 0 18px rgba(33, 150, 243, 0.2);
+
+  .loading-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #cfd8dc;
+    }
+  }
+
+  pre {
+    margin: 0;
+    white-space: pre-wrap;
+    line-height: 1.5;
+    font-size: 0.9rem;
+    color: #e3f2fd;
+  }
+}
+
+/* custom scrollbar */
+.dialog-content::-webkit-scrollbar {
+  width: 6px;
+}
+.dialog-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+.dialog-content::-webkit-scrollbar-thumb {
+  background: rgba(100, 181, 246, 0.7);
+  border-radius: 999px;
+}
+
+/* ─────────────── Footer ─────────────── */
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.2rem;
+
+  .send-btn {
+    background: linear-gradient(135deg, #1b5e20, #2e7d32);
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    border-radius: 999px;
+    padding: 0.55rem 1.6rem;
+    box-shadow:
+      0 0 14px rgba(76, 175, 80, 0.45),
+      0 0 6px rgba(0, 0, 0, 0.7);
+    transition: all 0.22s ease;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    &:hover:not([disabled]) {
+      background: linear-gradient(135deg, #2e7d32, #43a047);
+      transform: translateY(-1px);
+      box-shadow:
+        0 0 20px rgba(129, 199, 132, 0.75),
+        0 0 10px rgba(0, 0, 0, 0.85);
+    }
+
+    &[disabled] {
+      opacity: 0.7;
+      box-shadow: none;
+    }
+  }
+}
+
+/* ─────────────── Status ─────────────── */
+.status-msg {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.success-msg {
+  color: #81c784;
+  text-shadow: 0 0 6px rgba(129, 199, 132, 0.6);
+}
+
+.error-msg {
+  color: #ef5350;
+  text-shadow: 0 0 6px rgba(239, 83, 80, 0.6);
+}

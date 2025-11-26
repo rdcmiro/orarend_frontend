@@ -1,0 +1,61 @@
+<div class="dialog-wrapper">
+
+  <div class="dialog-header">
+    <div class="title">🧠 Tanulási terv</div>
+
+    <button
+      mat-icon-button
+      class="close-btn"
+      (click)="onClose()"
+      aria-label="Bezárás"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <p class="dialog-subtitle">
+    Az alábbi tanulási tervet az AI állította össze a teendőid alapján.
+    Ha szeretnéd, egy kattintással elküldheted magadnak emailben.
+  </p>
+
+  <div class="dialog-content">
+    <!-- Betöltés közben -->
+    <div class="loading-wrapper" *ngIf="loading">
+      <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+      <p>Tanulási terv készítése folyamatban...</p>
+    </div>
+
+    <!-- Eredmény -->
+    <pre *ngIf="!loading">{{ planText }}</pre>
+  </div>
+
+  <div class="dialog-footer">
+    <button
+      mat-raised-button
+      class="send-btn"
+      (click)="onSend()"
+      [disabled]="loading || sending || !planText"
+    >
+      <ng-container *ngIf="!sending">
+        📧 Elküldöm magamnak emailben
+      </ng-container>
+      <ng-container *ngIf="sending">
+        <mat-progress-spinner mode="indeterminate" diameter="20"></mat-progress-spinner>
+      </ng-container>
+    </button>
+  </div>
+
+  <p
+    *ngIf="sendSuccess"
+    class="status-msg success-msg"
+  >
+    ✔ A tanulási tervet sikeresen elküldtük emailben.
+  </p>
+
+  <p
+    *ngIf="sendError"
+    class="status-msg error-msg"
+  >
+    ⚠ {{ sendError }}
+  </p>
+</div>
